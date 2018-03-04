@@ -1,0 +1,21 @@
+﻿@model List<Blog.Models.Post>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+</head>
+<body>
+    <header>Blog Title</header>
+    <p1>Hello World!</p1>
+    <main>
+        @foreach (Blog.Models.Post post in Model){
+            <article>
+                <p>@post.Content</p>
+            </article>
+        }
+    </main>
+</body>
+</html>
