@@ -1,4 +1,4 @@
-﻿@model List<Blog.Models.Post>
+﻿@model ICollection<Blog.Models.Post>
 
 <!DOCTYPE html>
 
@@ -11,10 +11,19 @@
     <header>Blog Title</header>
     <p1>Hello World!</p1>
     <main>
-        @foreach (Blog.Models.Post post in Model){
-            <article>
+        @foreach (Blog.Models.Post post in Model)
+        {
+        <article>
+            <a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id">
+                @post.Title
+            </a>
                 <p>@post.Content</p>
-            </article>
+                <p>Tags:</p>
+                @foreach (Blog.Models.PostTag postTag in post.PostTags)
+                {
+                    <p>@postTag.Tag.Name</p>
+                }
+        </article>
         }
     </main>
 </body>

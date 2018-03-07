@@ -1,0 +1,17 @@
+﻿@model Blog.Models.PostTagNameViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Post</title>
+</head>
+<body>
+    <form asp-action="Add" asp-controller="AdminPanel">
+        <input asp-for="Post.Title" />
+        <input asp-for="Post.Content"/>
+        <input type="submit" value="Save"/>
+        <input asp-for="TagNames" />
+    </form>
+</body>
+</html>

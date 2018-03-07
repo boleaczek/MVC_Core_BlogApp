@@ -1,0 +1,17 @@
+﻿@model Blog.Models.Post
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Read</title>
+</head>
+<body>
+    <p>@Model.Title</p>
+    <p>@Model.Content</p>
+    <form asp-action="WriteComment" asp-controller="HomeController">
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>
