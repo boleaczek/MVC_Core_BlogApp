@@ -43,7 +43,7 @@ namespace Blog.Controllers
 
             await _context.SaveChangesAsync();
             
-            return Add();
+            return RedirectToAction("Add");
         }
     }
 }

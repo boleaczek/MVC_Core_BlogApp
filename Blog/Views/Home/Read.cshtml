@@ -1,4 +1,4 @@
-﻿@model Blog.Models.Post
+﻿@model Blog.Models.PostCommentViewModel
 
 <!DOCTYPE html>
 
@@ -8,10 +8,20 @@
     <title>Read</title>
 </head>
 <body>
-    <p>@Model.Title</p>
-    <p>@Model.Content</p>
-    <form asp-action="WriteComment" asp-controller="HomeController">
-        <input type="submit" value="Save" />
+    <p>@Model.Post.Title</p>
+    <p>@Model.Post.Content</p>
+    <p>@Model.Post.PublicationDate</p>
+    @foreach(Blog.Models.Comment c in Model.Post.Comments)
+    {
+        <p>@c.Author</p>
+        <p>@c.Content</p>
+    }
+    <p>Share your thoughts!</p>
+    <form asp-action="WriteComment" asp-controller="Home">
+        <input asp-for="@Model.Post.Id" value="@Model.Post.Id" type="hidden" />
+        <input asp-for="@Model.Comment.Author" />
+        <input asp-for="@Model.Comment.Content" />
+        <button type="submit">Save</button>
     </form>
 </body>
 </html>

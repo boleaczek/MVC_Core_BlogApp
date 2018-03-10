@@ -27,20 +27,28 @@ namespace Blog.Controllers
                 ThenInclude(t => t.Tag).
                 OrderBy(post => post.PublicationDate).
                 Take(5).ToList();
+
             return View(posts);
         }
 
         [HttpGet]
-        public IActionResult Read(int id)
+        public async Task<IActionResult> Read(int id)
         {
-            Post post = _context.Posts.SingleOrDefault(p => p.Id == id);
-            return View(post);
+            PostCommentViewModel postCommentViewModel = new PostCommentViewModel()
+            {
+                Post = await _context.Posts.Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id)
+            };
+            return View(postCommentViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> WriteComment(int id, Comment comment)
+        public async Task<IActionResult> WriteComment(PostCommentViewModel postCommentViewModel)
         {
-            Post post = _context.Posts.Include(p => p.Comments).SingleOrDefault(p => p.Id == id);
+            int id = postCommentViewModel.Post.Id;
+            Comment comment = postCommentViewModel.Comment;
+
+            Post post = await _context.Posts.Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id);
+            
             if(post.Comments == null)
             {
                 post.Comments = new List<Comment>();
@@ -51,7 +59,7 @@ namespace Blog.Controllers
             _context.Posts.Update(post);
             await _context.SaveChangesAsync();
 
-            return Read(post.Id);
+            return RedirectToAction("Read/" + post.Id.ToString());
         }
     }
 }
