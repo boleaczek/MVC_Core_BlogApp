@@ -1,0 +1,8 @@
+﻿@model int
+
+<nav>
+    @for (int i = 0; i < Model; i++)
+    {
+        <a asp-action="Pages" asp-route-page="@(i + 1)" class="page_number blog_navigation">@(i + 1)</a>
+    }
+</nav>

@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model Blog.Models.PostsTagsBlogDataViewModel
+
+<div id="info_bar">
+    <div>
+        <img src="@Model.BlogData.ImagePath" alt="logo" id="logo" />
+        <h1 id="blog_title">@Model.BlogData.BlogName</h1>
+    </div>
+    <div id="about">
+        <p>@Model.BlogData.AuthorName</p>
+        <p>@Model.BlogData.MailAddress</p>
+        <p>@Model.BlogData.Description</p>
+    </div>
+    <div>
+        <p id="tags">
+            @foreach (Blog.Models.Tag tag in Model.Tags)
+            {
+                <a class="tag blog_navigation" asp-action="FindArticle" asp-route-id="@tag.Id">@tag.Name</a> <text>&nbsp;</text>
+            }
+        </p>
+    </div>
+</div>

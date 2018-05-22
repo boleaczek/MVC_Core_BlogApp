@@ -11,6 +11,6 @@ namespace Blog.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public ICollection<PostTag> PostTags = new List<PostTag>();
+        public ICollection<PostTag> PostTags { get; } = new List<PostTag>();
     }
 }

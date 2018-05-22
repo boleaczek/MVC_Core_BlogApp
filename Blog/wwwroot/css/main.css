@@ -1,0 +1,174 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #d7d7c1;
+    color: black;
+    font-family: Verdana;
+}
+
+a:link {
+    color: #ff6600;
+}
+
+a:visited {
+    color: #b34700;
+}
+
+#side_bar {
+    background-color: #392613;
+    height: 100%;
+    width: 15%;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    position: fixed;
+    float: left;
+    color: #b3b3b3;
+}
+
+    #side_bar .blog_navigation:link {
+        color: #b3b3b3;
+        text-decoration: none;
+    }
+
+    #side_bar .blog_navigation:visited {
+        color: #b3b3b3;
+    }
+
+.menu, .posts_list {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+#side_bar .menu li .blog_navigation {
+    display: block;
+    margin: 1%;
+    background-color: #130d06;
+}
+
+#logo {
+    max-width: 50%;
+    max-height: 30%;
+}
+
+.container {
+    margin-left: 15%;
+    margin-right: 15%;
+    padding-left: 1px;
+}
+
+.post, .post_preview, .sorted_posts_list, #tag_list {
+    background-color: #f5f5ef;
+}
+
+.post_preview {
+    text-align: center;
+}
+
+.container .blog_navigation {
+    color: #0d0d0d;
+    text-decoration: none;
+}
+
+.tag {
+    color: #392613;
+}
+
+.page_number:link {
+    background-color: #392613;
+    color: #b3b3b3;
+    font-size: larger;
+}
+
+.page_number:visited {
+    color: #b3b3b3;
+}
+
+.comment_input * {
+    width: 100%;
+    border: none;
+}
+
+.button {
+    border: none;
+    background-color: #130d06;
+    color: #b3b3b3;
+}
+
+.main_navigation {
+    width: 100%;
+}
+
+.comment {
+    background-color: #f5f5ef;
+}
+
+.comment_author_name {
+    background-color: #392613;
+    color: #b3b3b3;
+}
+
+#hide_button {
+    top: 0;
+    left: 0;
+    z-index: 3;
+    position: fixed;
+}
+
+.comment_separator {
+    display: block;
+    background-color: #392613;
+    color: #b3b3b3;
+}
+
+.comment_content, .post {
+    padding: 0 10px 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    #side_bar {
+        position: relative;
+        width: 100%;
+        float: none;
+    }
+
+    #hide_button {
+        position: relative;
+    }
+
+    #blog_tittle {
+        width: 30%;
+        height: 30%;
+    }
+
+    #tags {
+        display: none;
+    }
+
+    #logo {
+        float: right;
+        max-width: 20%;
+        max-height: 20%;
+        top: 0;
+    }
+
+    #hide_button {
+        display: none;
+    }
+
+    .container {
+        margin: 0%;
+        width: 100%;
+    }
+
+    .post {
+        margin-right: 0%;
+    }
+
+    #comment_input_field {
+        height: 150px;
+    }
+}

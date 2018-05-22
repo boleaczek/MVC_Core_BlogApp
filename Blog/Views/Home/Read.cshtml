@@ -1,27 +1,51 @@
 ﻿@model Blog.Models.PostCommentViewModel
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Read</title>
-</head>
-<body>
-    <p>@Model.Post.Title</p>
-    <p>@Model.Post.Content</p>
-    <p>@Model.Post.PublicationDate</p>
-    @foreach(Blog.Models.Comment c in Model.Post.Comments)
-    {
-        <p>@c.Author</p>
-        <p>@c.Content</p>
-    }
-    <p>Share your thoughts!</p>
+@{
+    Layout = "_Layout";
+}
+<div id="app">
+    <main>
+        <h1>@Model.Post.Title</h1>
+        <p id="date">Published: </p>
+        <button v-on:click="scrollTo('#comments_block')" class="button main_navigation">Go to comments</button>
+        <article class="post" id="scrollable">
+            <markdown content="@Model.Post.Content"></markdown>
+        </article>
+    </main>
     <form asp-action="WriteComment" asp-controller="Home">
         <input asp-for="@Model.Post.Id" value="@Model.Post.Id" type="hidden" />
-        <input asp-for="@Model.Comment.Author" />
-        <input asp-for="@Model.Comment.Content" />
-        <button type="submit">Save</button>
+        <ul class="menu comment_input">
+            <li>
+                <input asp-for="@Model.Comment.Author" />
+            </li>
+            <li>
+                <textarea asp-for="@Model.Comment.Content" id="comment_input_field"></textarea>
+            </li>
+            <li>
+                <button type="submit" class="button" id="comment_submit_button">Post</button>
+            </li>
+        </ul>
     </form>
-</body>
-</html>
+    <div id="comments_block">
+        <button v-on:click="scrollTo('#app')" class="button main_navigation">Scroll to top.</button>
+        @foreach (Blog.Models.Comment c in Model.Post.Comments)
+        {
+            <div class="comment">
+                <p class="comment_author_name">@c.Author</p>
+                <p class="comment_content">@c.Content</p>
+            </div>
+        }
+        <button v-on:click="scrollTo('#comments_block')" class="button main_navigation">Top of the comments.</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="~/JavaScript/GetDate.js"></script>
+<script src="~/JavaScript/PageNavigator.js"></script>
+<script>
+        document.getElementById("date").textContent += howLongAgo('@Model.Post.PublicationDate.ToUniversalTime().ToString("o")');
+</script>
+<script>
+    let vm = navigate("#app");
+</script>
+
+

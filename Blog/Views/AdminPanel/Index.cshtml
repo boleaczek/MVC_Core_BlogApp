@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+@model Blog.Models.PostsBlogDataViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @await Html.PartialAsync("BlogDataPartial",Model.BlogData)
+    <table>
+        <tr>
+            <td colspan="5"><a asp-action="Add">Add</a></td>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Publication Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var post in Model.Posts)
+        {
+            <tr>
+                <td>@post.Id</td>
+                <td>@post.Title</td>
+                <td>@post.PublicationDate</td>
+                <td><a asp-action="Modify" asp-route-id="@post.Id">Modify</a></td>
+                <td><a asp-action="Delete" asp-route-id="@post.Id">Delete</a></td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

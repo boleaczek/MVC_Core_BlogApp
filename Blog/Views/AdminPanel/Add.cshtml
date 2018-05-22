@@ -5,13 +5,19 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Add Post</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 </head>
 <body>
-    <form asp-action="Add" asp-controller="AdminPanel">
+    <form asp-action="Add" asp-controller="AdminPanel" id="app">
         <input asp-for="Post.Title" />
-        <input asp-for="Post.Content"/>
-        <input type="submit" value="Save"/>
+        <textarea id="input" asp-for="Post.Content"></textarea>
         <input asp-for="TagNames" />
+        <input type="submit" value="Save" />
     </form>
+    <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("input") });
+        simplemde.value("TEST");
+    </script>
 </body>
 </html>

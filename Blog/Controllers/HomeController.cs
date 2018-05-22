@@ -6,29 +6,54 @@ using Blog.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Newtonsoft.Json;
+using Blog.Models.Other;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Blog.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BlogController
     {
         // GET: /<controller>/
         private readonly BlogContext _context;
+        BlogData _blogData;
 
-        public HomeController(BlogContext context)
+        public HomeController(BlogContext context, BlogData blogData):base(blogData)
         {
             _context = context;
+            _blogData = blogData;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            ICollection<Post> posts = _context.Posts.Include(t => t.PostTags).
-                ThenInclude(t => t.Tag).
-                OrderBy(post => post.PublicationDate).
-                Take(5).ToList();
+            ViewData["Title"] = "Index";
+            ViewBag.PagesCount = _context.Posts.Count() / 5;
+            return View(await GetPostTagDataViewModel(0));
+        }
 
-            return View(posts);
+        public async Task<IActionResult> Pages(int page)
+        {
+            ViewData["Title"] = "Pages";
+            ViewBag.PagesCount = _context.Posts.Count() / 5;
+            return View(await GetPostTagDataViewModel(page));
+        }
+
+        async Task<PostsTagsViewModel> GetPostTagDataViewModel(int page)
+        {
+            ICollection<Post> posts = await FindPosts(page);
+            ICollection<Tag> tags = await _context.Tags.ToListAsync();
+            return new PostsTagsViewModel() { Tags = tags, Posts = posts};
+        }
+
+        async Task<ICollection<Post>> FindPosts(int page)
+        {
+            ICollection<Post> posts = await _context.Posts.Include(t => t.PostTags)
+                .ThenInclude(t => t.Tag)
+                .OrderBy(post => post.PublicationDate)
+                .Skip(5 * page)
+                .Take(5).ToListAsync();
+            return posts;
         }
 
         [HttpGet]
@@ -38,6 +63,7 @@ namespace Blog.Controllers
             {
                 Post = await _context.Posts.Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id)
             };
+            ViewData["Title"] = postCommentViewModel.Post.Title;
             return View(postCommentViewModel);
         }
 

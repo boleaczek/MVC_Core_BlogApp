@@ -1,0 +1,17 @@
+﻿@model Blog.Models.Other.BlogData
+@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="app">
+    <h2>About</h2>
+    <p id="descritpion"></p>
+    <p id="mail_address"></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script>
+    $.getJSON('about/getinfo', function (data) {
+        document.getElementById('descritpion').innerText = data.Description;
+        document.getElementById('mail_address').innerText = data.MailAddress;
+    });
+</script>

@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = null;
+}
+@model Blog.Models.Other.BlogData
+<!DOCTYPE html>
+
+<form asp-action="ModifyBlogData" asp-controller="AdminPanel">
+    <ul>
+        <li>
+            <label>Blog Name</label>
+            <input asp-for="BlogName" value="@Model.BlogName" />
+        </li>
+        <li>
+            <label>Author Name</label>
+            <input asp-for="AuthorName" value="@Model.AuthorName" />
+        </li>
+        <li>
+            <label>Email Address</label>
+            <input asp-for="MailAddress" value="@Model.MailAddress" />
+        </li>
+        <li>
+            <label>Description</label>
+            <input asp-for="Description" value="@Model.Description" />
+        </li>
+        <li>
+            <input type="submit" value="Change" />
+        </li>
+    </ul>
+</form>
+<img src="@Model.ImagePath" alt="No logo selected." />
+<form method="post" enctype="multipart/form-data" asp-controller="AdminPanel" asp-action="UploadLogo">
+    <label>Blog logo path.</label>
+    <input type="file" name="logo"/>
+    <input type="submit" value="Upload new logo." />
+</form>
