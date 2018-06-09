@@ -1,23 +1,25 @@
 ﻿@model Blog.Models.PostTagNameViewModel
+
 <!DOCTYPE html>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Add Post</title>
+    <title>Modify</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    
 </head>
 <body>
-    <form asp-action="Add" asp-controller="AdminPanel" id="app">
-        <input asp-for="Post.Title"  />
+    <form asp-action="Modify" asp-controller="AdminPanel" id="app">
+        <input asp-for="Post.Id" value="@Model.Post.Id" type="hidden" />
+        <input asp-for="Post.Title" value="@Model.Post.Title" />
         <textarea id="input" asp-for="Post.Content"></textarea>
-        <input asp-for="TagNames" />
+        <input asp-for="TagNames" value="@Model.TagNames"/>
         <input type="submit" value="Save" />
     </form>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script>
     var simplemde = new SimpleMDE({ element: document.getElementById("input") });
-    simplemde.value("");
+    simplemde.value(@Model.Post.Content);
     </script>
 </body>
 </html>

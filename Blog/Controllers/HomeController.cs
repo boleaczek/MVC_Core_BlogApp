@@ -16,7 +16,6 @@ namespace Blog.Controllers
     {
         // GET: /<controller>/
         private readonly BlogContext _context;
-        BlogData _blogData;
 
         public HomeController(BlogContext context, BlogData blogData):base(blogData)
         {

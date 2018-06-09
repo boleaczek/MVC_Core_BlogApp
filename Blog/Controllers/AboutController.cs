@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.Controllers
 {
+    [Authorize]
     public class AboutController : BlogController
     {
         public AboutController(BlogData blogData) : base(blogData)

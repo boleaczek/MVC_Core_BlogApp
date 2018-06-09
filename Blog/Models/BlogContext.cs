@@ -17,6 +17,14 @@ namespace Blog.Models
         {
             modelBuilder.Entity<PostTag>()
                 .HasKey(t => new { t.PostId, t.TagId });
+
+            modelBuilder.Entity<PostTag>()
+                .HasOne(pt => pt.Post)
+                .WithMany("PostTags");
+
+            modelBuilder.Entity<PostTag>()
+                .HasOne(pt => pt.Tag)
+                .WithMany("PostTags");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -74,12 +74,16 @@ namespace Blog.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Modify(Post post)
+        [HttpGet]
+        public async Task<IActionResult> Modify(int id)
         {
-            await _context.Posts.AddAsync(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Read");
+            Post post = await _context.Posts.Where(p => p.Id == id)
+                .Include(p => p.PostTags)
+                .ThenInclude(e => e.Tag)
+                .FirstOrDefaultAsync();
+
+            PostTagNameViewModel postTagNameViewModel = new PostTagNameViewModel() { Post = post, TagNames = PostTagsToStringHelper(post.PostTags) };
+            return View(postTagNameViewModel);
         }
 
         [HttpGet]
@@ -94,23 +98,74 @@ namespace Blog.Controllers
             Post post = postTagNameViewModel.Post;
             post.PublicationDate = DateTime.Now;
             _context.Update(post);
-            string[] tagNames = postTagNameViewModel.TagNames.Split(' ');
-            Tag[] tags = new Tag[tagNames.Length];
-
-            for (int i = 0; i < tagNames.Length; i++)
-            {
-                tags[i] = _context.Tags.SingleOrDefault(name => name.Name == tagNames[i]);
-                if (tags[i] == null)
-                {
-                    tags[i] = new Tag() { Name = tagNames[i] };
-                    _context.Update(tags[i]);
-                }
-                _context.Update(new PostTag() { Tag = tags[i], Post = post });
-            }
+            AddTags(post, postTagNameViewModel.TagNames);
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Modify(PostTagNameViewModel postTagNameViewModel)
+        {
+            Post post = await _context.Posts.Where(p => p.Id == postTagNameViewModel.Post.Id)
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
+                .SingleOrDefaultAsync();
+            
+            _context.RemoveRange(post.PostTags);
+            await _context.SaveChangesAsync();
+            _context.Update(post);
+            AddTags(post, postTagNameViewModel.TagNames);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        void AddTags(Post post, string tags_string)
+        {
+            string[] tag_names = tags_string.Split();
+            Tag[] tags = new Tag[tag_names.Length];
+
+            for (int i = 0; i < tag_names.Length; i++)
+            {
+                tags[i] = _context.Tags.SingleOrDefault(name => name.Name == tag_names[i]);
+                if (tags[i] == null)
+                {
+                    tags[i] = new Tag() { Name = tag_names[i] };
+                    _context.Update(tags[i]);
+                }
+                _context.Add(new PostTag() { Tag = tags[i], Post = post });
+            }
+        }
+
+        ICollection<Tag> GetTags(string tags_string)
+        {
+            string[] tag_names = tags_string.Trim().Split();
+            ICollection<Tag> tags = new Tag[tag_names.Length];
+
+            foreach (string tag_name in tag_names)
+            {
+                tags.Add(new Tag() { Name = tag_name });
+            }
+
+            return tags;
+        }
+
+        void RemovePostTags(ICollection<PostTag> postTags, ICollection<Tag> tags)
+        {
+        }
+
+        string PostTagsToStringHelper(ICollection<PostTag> tags)
+        {
+            string tags_string = "";
+            foreach (var posttag in tags)
+            {
+                tags_string += posttag.Tag.Name + " ";
+            }
+
+            return tags_string;
         }
     }
 }

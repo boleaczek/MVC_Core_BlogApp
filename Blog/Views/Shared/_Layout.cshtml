@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link type="text/css" rel="stylesheet" href="~/css/main.css" />
     <title>@ViewData["Title"] - @ViewData["BlogName"]</title>
-    <script src="~/JavaScript/HideSideBar.js"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 </head>
 <body>
     <div id="side_bar">
@@ -23,7 +21,6 @@
             <li><a asp-controller="About" asp-action="Index" class="blog_navigation">About</a></li>
         </ul>
     </div>
-    <button onclick="hideSideBar('side_bar')" value="Hide Sidebar" id="hide_button" class="button">Sidebar</button>
     <div class="container body-content moveable">
         @RenderBody()
     </div>
