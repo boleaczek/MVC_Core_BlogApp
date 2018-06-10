@@ -1,5 +1,6 @@
 ﻿using Blog.Models;
 using Blog.Models.Other;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
+    [Authorize]
     public class AdminPanelController : Controller
-    {
+    {   
         private readonly BlogContext _context;
         BlogData _blogData;
         IHostingEnvironment _hostingEnvironment;
@@ -27,11 +29,12 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ICollection<Post> posts = await _context.Posts.Include(t => t.PostTags).
-                ThenInclude(t => t.Tag).
-                OrderBy(post => post.PublicationDate).ToListAsync();
+            ICollection<Post> posts = await _context.Posts
+                .OrderBy(post => post.PublicationDate)
+                .ToListAsync();
+            ICollection<Tag> tags = await _context.Tags.ToListAsync();
 
-            return View(new PostsBlogDataViewModel() { BlogData = _blogData, Posts = posts });
+            return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags });
         }
 
         [HttpGet]
@@ -51,7 +54,7 @@ namespace Blog.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeletePost(int id)
         {
             Post post = _context.Posts.Include(p => p.Comments).Include(p => p.PostTags).Single(p => p.Id == id);
             _context.RemoveRange(post.Comments);
@@ -121,6 +124,30 @@ namespace Blog.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteTag(int id)
+        {
+            Tag tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == id);
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        
+        public async Task<IActionResult> CommentManager(int id)
+        {
+            ICollection<Comment> comments = await _context.Comments
+                .Where(c => c.Post.Id == id).ToListAsync();
+            return View(comments);
+        }
+
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            Comment comment = await  _context.Comments.Include(c => c.Post).SingleOrDefaultAsync(c => c.Id == id);
+            _context.Remove(comment);
+            int redir_id = comment.Post.Id;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("CommentManager", new { id=redir_id });
         }
 
         void AddTags(Post post, string tags_string)

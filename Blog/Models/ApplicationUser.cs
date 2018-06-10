@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }

@@ -7,6 +7,7 @@ using Blog.Models.Other;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,12 @@ namespace Blog
             services.AddTransient<BlogData>();
             services.AddDbContext<BlogContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<UserContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityDb")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<UserContext>()
+                .AddDefaultTokenProviders();
         }
 
         public Startup(IHostingEnvironment env, IConfiguration config)
@@ -36,7 +43,10 @@ namespace Blog
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
+
             app.UseStaticFiles();
+
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "default",

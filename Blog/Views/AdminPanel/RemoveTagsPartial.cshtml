@@ -1,0 +1,11 @@
+﻿@model ICollection<Blog.Models.Tag>
+<table>
+    <tr>TAGS</tr>
+    @foreach (var tag in Model)
+    {
+        <tr>
+            <td>@tag.Name</td>
+            <td><a asp-action="DeleteTag" asp-route-id="@tag.Id">Delete</a></td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,22 @@
+﻿@model ICollection<Blog.Models.Comment>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CommentManager</title>
+</head>
+<body>
+    <table>
+        <tr>COMMENTS</tr>
+        @foreach (var comment in Model)
+        {
+            <tr><td><a asp-action="DeleteComment" asp-route-id="@comment.Id">Delete</a></td></tr>
+            <tr><td>Author</td></tr>
+            <tr><td>@comment.Author</td></tr>
+            <tr><td>Content</td></tr>
+            <tr><td>@comment.Content</td></tr>
+        }
+    </table>
+</body>
+</html>

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Models
 {
-    public class PostsBlogDataViewModel
+    public class AdminPanelViewModel
     {
         public ICollection<Post> Posts { get; set; }
+        public ICollection<Tag> Tags { get; set; }
         public BlogData BlogData { get; set; }
     }
 }

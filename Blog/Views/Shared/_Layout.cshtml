@@ -10,7 +10,7 @@
 <body>
     <div id="side_bar">
         <div>
-            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo" id="logo" onmouseover="$(this).fadeOut(); $(this).fadeIn('slow');" /></a>
+            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo" id="logo"/></a>
             <h1><a asp-controller="Home" asp-action="Index" id="blog_title" class="blog_navigation side_bar_element">@ViewData["BlogName"]</a></h1>
         </div>
         <div id="description">

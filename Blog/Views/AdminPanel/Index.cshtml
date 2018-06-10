@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-@model Blog.Models.PostsBlogDataViewModel
+@model Blog.Models.AdminPanelViewModel
 
 <!DOCTYPE html>
 
@@ -14,6 +14,7 @@
 <body>
     @await Html.PartialAsync("BlogDataPartial",Model.BlogData)
     <table>
+        <tr>POSTS</tr>
         <tr>
             <td colspan="5"><a asp-action="Add">Add</a></td>
         </tr>
@@ -31,9 +32,11 @@
                 <td>@post.Title</td>
                 <td>@post.PublicationDate</td>
                 <td><a asp-action="Modify" asp-route-id="@post.Id">Modify</a></td>
-                <td><a asp-action="Delete" asp-route-id="@post.Id">Delete</a></td>
+                <td><a asp-action="DeletePost" asp-route-id="@post.Id">Delete</a></td>
+                <td><a asp-action="CommentManager" asp-route-id="@post.Id">Manage Comments</a></td>
             </tr>
         }
     </table>
+    @await  Html.PartialAsync("RemoveTagsPartial", Model.Tags)
 </body>
 </html>
