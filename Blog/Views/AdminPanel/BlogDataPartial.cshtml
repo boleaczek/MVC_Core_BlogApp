@@ -9,19 +9,19 @@
     <ul>
         <li>
             <label>Blog Name</label>
-            <input asp-for="BlogName" value="@Model.BlogName" />
+            <input asp-for="BlogName" alue="@Model.BlogName" />
         </li>
         <li>
             <label>Author Name</label>
-            <input asp-for="AuthorName" value="@Model.AuthorName" />
+            <input asp-for="AuthorName" type="text"  value="@Model.AuthorName" />
         </li>
         <li>
             <label>Email Address</label>
-            <input asp-for="MailAddress" value="@Model.MailAddress" />
+            <input asp-for="MailAddress" type="email" value="@Model.MailAddress" />
         </li>
         <li>
             <label>Description</label>
-            <input asp-for="Description" value="@Model.Description" />
+            <textarea asp-for="Description"  value="@Model.Description"></textarea>
         </li>
         <li>
             <input type="submit" value="Change" />
