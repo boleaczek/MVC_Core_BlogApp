@@ -21,7 +21,11 @@
         </li>
         <li>
             <label>Description</label>
-            <input asp-for="Description" value="@Model.Description" />
+            <textarea asp-for="Description">@Model.Description</textarea>
+        </li>
+        <li>
+            <label>Phone Number</label>
+            <input asp-for="PhoneNumber" value="@Model.PhoneNumber" />
         </li>
         <li>
             <input type="submit" value="Change" />
