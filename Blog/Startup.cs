@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Models;
 using Blog.Models.Other;
+using Blog.UnitsOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@ namespace Blog
         {
             services.AddMvc();
             services.AddTransient<BlogData>();
+            services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
             services.AddDbContext<BlogContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<UserContext>(options =>
@@ -42,10 +44,11 @@ namespace Blog
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
-
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseStaticFiles();
-
             app.UseAuthentication();
             app.UseMvc(routes =>
             {

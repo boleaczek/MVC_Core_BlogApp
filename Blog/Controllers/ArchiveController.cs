@@ -8,23 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Blog.Models.Other;
+using Blog.UnitsOfWork;
 
 namespace Blog.Controllers
 {
     public class ArchiveController : BlogController
     {
-        private readonly BlogContext _context;
+        private readonly IBlogUnitOfWork _blogUnitOfWork;
 
-        public ArchiveController(BlogContext context, BlogData blogData) : base(blogData)
+        public ArchiveController(BlogData blogData, IBlogUnitOfWork blogUnitOfWork) : base(blogData)
         {
-            _context = context;
+            _blogUnitOfWork = blogUnitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Archive";
-            ICollection<Tag> tags = await _context.Tags
+            ICollection<Tag> tags = await _blogUnitOfWork.Tags
+                .GetAll()
                 .Include(t => t.PostTags)
                 .ThenInclude(pt => pt.Post)
                 .ToListAsync();
@@ -34,7 +36,7 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<bool> IsUsed(string tagName)
         {
-            Tag tag = await _context.Tags.SingleOrDefaultAsync(t => t.Name == tagName);
+            Tag tag = await _blogUnitOfWork.Tags.SearchFor(t => t.Name == tagName).SingleOrDefaultAsync();
             if (tag == null)
             {
                 return false;

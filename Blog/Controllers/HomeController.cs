@@ -9,60 +9,46 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Blog.Models.Other;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Blog.UnitsOfWork;
 
 namespace Blog.Controllers
 {
     public class HomeController : BlogController
     {
         // GET: /<controller>/
-        private readonly BlogContext _context;
+        private readonly IBlogUnitOfWork unitOfWork;
 
-        public HomeController(BlogContext context, BlogData blogData):base(blogData)
+        public HomeController(BlogData blogData, IBlogUnitOfWork blogUnitOfWork):base(blogData)
         {
-            _context = context;
             _blogData = blogData;
+            unitOfWork = blogUnitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Index";
-            ViewBag.PagesCount = _context.Posts.Count() / 5;
+            ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
             return View(await GetPostTagDataViewModel(0));
         }
 
         public async Task<IActionResult> Pages(int page)
         {
             ViewData["Title"] = "Pages";
-            ViewBag.PagesCount = _context.Posts.Count() / 5;
+            ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
             return View(await GetPostTagDataViewModel(page));
-        }
-
-        async Task<PostsTagsViewModel> GetPostTagDataViewModel(int page)
-        {
-            ICollection<Post> posts = await FindPosts(page);
-            ICollection<Tag> tags = await _context.Tags.ToListAsync();
-            return new PostsTagsViewModel() { Tags = tags, Posts = posts};
-        }
-
-        async Task<ICollection<Post>> FindPosts(int page)
-        {
-            ICollection<Post> posts = await _context.Posts.Include(t => t.PostTags)
-                .ThenInclude(t => t.Tag)
-                .OrderBy(post => post.PublicationDate)
-                .Skip(5 * page)
-                .Take(5).ToListAsync();
-            return posts;
         }
 
         [HttpGet]
         public async Task<IActionResult> Read(int id)
         {
+            Post post = await unitOfWork.Posts.GetById(id);
+            post.Comments = await unitOfWork.Comments.SearchFor(comment => comment.Post.Id == id).ToListAsync();
             PostCommentViewModel postCommentViewModel = new PostCommentViewModel()
             {
-                Post = await _context.Posts.Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id)
+                Post = post
             };
-            ViewData["Title"] = postCommentViewModel.Post.Title;
+            ViewData["Title"] = post.Title;
             return View(postCommentViewModel);
         }
 
@@ -72,19 +58,42 @@ namespace Blog.Controllers
             int id = postCommentViewModel.Post.Id;
             Comment comment = postCommentViewModel.Comment;
 
-            Post post = await _context.Posts.Include(p => p.Comments).SingleOrDefaultAsync(p => p.Id == id);
+            Post post = await unitOfWork.Posts.GetById(id);
             
             if(post.Comments == null)
             {
                 post.Comments = new List<Comment>();
             }
 
-            _context.Comments.Update(comment);
+            unitOfWork.Comments.Insert(comment);
             post.Comments.Add(comment);
-            _context.Posts.Update(post);
-            await _context.SaveChangesAsync();
+            
+            await unitOfWork.SaveAsync();
 
             return RedirectToAction("Read/" + post.Id.ToString());
         }
+
+        #region helpers
+
+        [NonAction]
+        async Task<PostsTagsViewModel> GetPostTagDataViewModel(int page)
+        {
+            ICollection<Post> posts = await FindPosts(page);
+            ICollection<Tag> tags = await unitOfWork.Tags.GetAll().ToListAsync();
+            return new PostsTagsViewModel() { Tags = tags, Posts = posts };
+        }
+
+        [NonAction]
+        async Task<ICollection<Post>> FindPosts(int page)
+        {
+            ICollection<Post> posts = await unitOfWork.Posts.GetAll()
+                .OrderBy(post => post.PublicationDate)
+                .Skip(5 * page)
+                .Take(5)
+                .ToListAsync();
+            return posts;
+        }
+
+        #endregion
     }
 }

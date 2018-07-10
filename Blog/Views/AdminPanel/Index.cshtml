@@ -32,7 +32,7 @@
                 <td>@post.Title</td>
                 <td>@post.PublicationDate</td>
                 <td><a asp-action="Modify" asp-route-id="@post.Id">Modify</a></td>
-                <td><a asp-action="DeletePost" asp-route-id="@post.Id">Delete</a></td>
+                <td><a asp-controller="AdminPanel" asp-action="DeletePost" asp-route-id="@post.Id">Delete</a></td>
                 <td><a asp-action="CommentManager" asp-route-id="@post.Id">Manage Comments</a></td>
             </tr>
         }
