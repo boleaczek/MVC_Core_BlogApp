@@ -23,9 +23,7 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            //var user = new ApplicationUser { UserName = "admin", Email = "admin@blog.com" };
-            //var result = await _userManager.CreateAsync(user, "Admin_panel1");
-            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            
             return View();
         }
 
