@@ -47,7 +47,6 @@ namespace Blog.Controllers
             return RedirectToAction("Index");
         }
         
-        [HttpDelete]
         public async Task<IActionResult> DeletePost(int id)
         {
             Post post = _blogUnitOfWork.Posts.GetAll().Include(p => p.Comments).Include(p => p.PostTags).Single(p => p.Id == id);
@@ -131,7 +130,6 @@ namespace Blog.Controllers
             return View(comments);
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteComment(int id)
         {
             Comment comment = await _blogUnitOfWork.Comments.GetAll().Include(c => c.Post).SingleOrDefaultAsync(c => c.Id == id);
@@ -141,7 +139,6 @@ namespace Blog.Controllers
             return RedirectToAction("CommentManager", new { id = redir_id });
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteTag(int id)
         {
             Tag tag = await _blogUnitOfWork.Tags.GetById(id);
