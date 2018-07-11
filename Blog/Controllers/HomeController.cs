@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Blog.Models.Other;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Blog.UnitsOfWork;
+using Blog.Models.ViewModels;
 
 namespace Blog.Controllers
 {
