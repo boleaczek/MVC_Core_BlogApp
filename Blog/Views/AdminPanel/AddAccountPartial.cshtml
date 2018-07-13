@@ -1,0 +1,8 @@
+﻿@model Blog.Models.ViewModels.AccountViewModel
+<form asp-action="AddUser" method="post">
+    <label>Email</label>
+    <input asp-for="Email" />
+    <label>Password</label>
+    <input asp-for="Password" class="form-control" />
+    <input type="submit" value="Add user" />
+</form>

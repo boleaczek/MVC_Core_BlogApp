@@ -5,6 +5,7 @@ using Blog.UnitsOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,16 +18,20 @@ namespace Blog.Controllers
 {
     [Authorize]
     public class AdminPanelController : Controller
-    {   
+    {
         private readonly IBlogUnitOfWork _blogUnitOfWork;
         BlogData _blogData;
+        UserContext _userContext;
+        UserManager<ApplicationUser> _userManager;
         IHostingEnvironment _hostingEnvironment;
 
-        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork)
+        public AdminPanelController(UserManager<ApplicationUser> userManager, BlogData blogData, UserContext userContext, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork)
         {
             _blogData = blogData;
             _hostingEnvironment = env;
             _blogUnitOfWork = blogUnitOfWork;
+            _userContext = userContext;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -47,7 +52,7 @@ namespace Blog.Controllers
             _blogData.SaveData(blogData);
             return RedirectToAction("Index");
         }
-        
+
         public async Task<IActionResult> DeletePost(int id)
         {
             Post post = _blogUnitOfWork.Posts.GetAll().Include(p => p.Comments).Include(p => p.PostTags).Single(p => p.Id == id);
@@ -109,7 +114,7 @@ namespace Blog.Controllers
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .SingleOrDefaultAsync();
-            
+
             _blogUnitOfWork.PostTags.DeleteMany(post.PostTags);
             await _blogUnitOfWork.SaveAsync();
 
@@ -148,6 +153,21 @@ namespace Blog.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UserManager()
+        {
+            ICollection<ApplicationUser> users = await _userContext.Users.ToListAsync();
+            return View(new UserManagerViewModel() { Users = users });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AccountViewModel model)
+        {
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            return RedirectToAction("UserManager");
+        }
+
         #region helpers
 
         [NonAction]
@@ -164,7 +184,7 @@ namespace Blog.Controllers
                     tags[i] = new Tag() { Name = tag_names[i] };
                     _blogUnitOfWork.Tags.Update(tags[i]);
                 }
-                
+
                 _blogUnitOfWork.PostTags.Insert(new PostTag() { Tag = tags[i], Post = post });
             }
         }

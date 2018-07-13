@@ -23,12 +23,11 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(AccountViewModel loginViewModel)
         {
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, false, false);
             

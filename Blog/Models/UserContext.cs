@@ -12,6 +12,7 @@ namespace Blog.Models
         public UserContext(DbContextOptions<UserContext> options)
         : base(options)
         {
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BlogIdentityDB;ConnectRetryCount=0");

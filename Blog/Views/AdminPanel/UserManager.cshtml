@@ -1,0 +1,28 @@
+﻿@model Blog.Models.ViewModels.UserManagerViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UserManager</title>
+</head>
+<body>
+    @await Html.PartialAsync("AddAccountPartial", Model.accountViewModel)
+    <table>
+        <tr>
+            <th>User Name</th>
+            <th>Delete</th>
+        </tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+            </tr>
+            <tr>
+                <td><a asp-action="DeleteUser">Delete</a></td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
