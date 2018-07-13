@@ -14,24 +14,20 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blog.Controllers
+namespace Blog.Controllers.AdminPanel
 {
     [Authorize]
     public class AdminPanelController : Controller
     {
         private readonly IBlogUnitOfWork _blogUnitOfWork;
         BlogData _blogData;
-        UserContext _userContext;
-        UserManager<ApplicationUser> _userManager;
         IHostingEnvironment _hostingEnvironment;
 
-        public AdminPanelController(UserManager<ApplicationUser> userManager, BlogData blogData, UserContext userContext, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork)
+        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork)
         {
             _blogData = blogData;
             _hostingEnvironment = env;
             _blogUnitOfWork = blogUnitOfWork;
-            _userContext = userContext;
-            _userManager = userManager;
         }
 
         [HttpGet]
@@ -153,20 +149,7 @@ namespace Blog.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> UserManager()
-        {
-            ICollection<ApplicationUser> users = await _userContext.Users.ToListAsync();
-            return View(new UserManagerViewModel() { Users = users });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddUser(AccountViewModel model)
-        {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            return RedirectToAction("UserManager");
-        }
+       
 
         #region helpers
 

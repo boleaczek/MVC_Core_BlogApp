@@ -20,7 +20,7 @@
                 <td>@user.UserName</td>
             </tr>
             <tr>
-                <td><a asp-action="DeleteUser">Delete</a></td>
+                <td><a asp-controller="UserManager" asp-action="Delete" asp-route-id="@user.Id">Delete</a></td>
             </tr>
         }
     </table>
