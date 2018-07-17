@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models
 {
-    public class Comment
+    public class Comment : IBlogResource
     {
         public int Id { get; set; }
         [Required]

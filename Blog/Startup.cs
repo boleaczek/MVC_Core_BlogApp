@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+using Blog.Authorization;
 
 namespace Blog
 {
@@ -31,7 +33,12 @@ namespace Blog
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc()
+            services.AddMvc(config =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                                        .RequireAuthenticatedUser()
+                                        .Build();
+                })
                  .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<BlogData>();
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
@@ -43,6 +50,8 @@ namespace Blog
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddSingleton<IAuthorizationHandler, BlogAdminAuthorizationHandler>();
         }
 
         public Startup(IHostingEnvironment env, IConfiguration config)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models
 {
-    public class Post
+    public class Post : IBlogResource
     {
         public int Id { get; set; }
         [Required]

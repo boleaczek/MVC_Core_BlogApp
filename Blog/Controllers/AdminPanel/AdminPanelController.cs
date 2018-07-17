@@ -39,7 +39,7 @@ namespace Blog.Controllers.AdminPanel
                 .ToListAsync();
             ICollection<Tag> tags = await _blogUnitOfWork.Tags.GetAll().ToListAsync();
 
-            return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags });
+            return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags, CurrentUser = User });
         }
 
         [HttpPost]

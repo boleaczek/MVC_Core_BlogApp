@@ -37,7 +37,10 @@
 </tr>
         }
     </table>
-    <a asp-controller="UserManager" asp-action="Index">Manage Users</a>
+    @if (Model.CurrentUser.IsInRole(Blog.Authorization.BlogConstants.AdministratorRole))
+    {
+        <a asp-controller="UserManager" asp-action="Index">Manage Users</a>
+    }
     @await  Html.PartialAsync("RemoveTagsPartial", Model.Tags)
 </body>
 </html>
