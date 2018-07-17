@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models.ViewModels
 {
-    public class AccountViewModel
+    public class AccountLoginViewModel
     {
         [Required]
         [EmailAddress]

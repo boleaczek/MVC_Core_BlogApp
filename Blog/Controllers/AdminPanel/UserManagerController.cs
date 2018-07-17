@@ -41,21 +41,40 @@ namespace Blog.Controllers.AdminPanel
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AccountViewModel model)
+        public async Task<IActionResult> Add(AccountCreateViewModel model)
         {
-            if (UserIsAuthorized())
+            if (!UserIsAuthorized())
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                return RedirectToAction("Index");
+                return RedirectToReferer();
             }
-            return RedirectToReferer();
+
+            var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email };
+            var result = await _userManager.CreateAsync(user, model.LoginData.Password);
+
+            if (!result.Succeeded)
+            {
+                //handle errors
+            }
+
+            if(model.IsAdmin == true)
+            {
+                var role = await _userContext.Roles.SingleOrDefaultAsync(r => r.Name == BlogConstants.AdministratorRole);
+                var userRole = 
+                await _userContext.UserRoles.AddAsync(
+                    new IdentityUserRole<string>()
+                    {
+                        RoleId = role.Id,
+                        UserId = user.Id });
+                await _userContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
         }
 
         [Route("/Delete{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            
+
             var userToRemove = await _userContext.Users.SingleOrDefaultAsync(u => u.Id == id);
             var authorized = await _authorizationService.AuthorizeAsync(User, userToRemove, BlogAuthorization.Delete);
             if (authorized.Succeeded)

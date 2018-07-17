@@ -27,7 +27,7 @@ namespace Blog.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AccountViewModel loginViewModel)
+        public async Task<IActionResult> Login(AccountLoginViewModel loginViewModel)
         {
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, false, false);
             

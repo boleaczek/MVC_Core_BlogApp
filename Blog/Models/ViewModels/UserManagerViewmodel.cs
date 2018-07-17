@@ -7,7 +7,7 @@ namespace Blog.Models.ViewModels
 {
     public class UserManagerViewModel
     {
-        public AccountViewModel accountViewModel { get; set; }
+        public AccountLoginViewModel accountViewModel { get; set; }
         public ICollection<ApplicationUser> Users { get; set; }
     }
 }

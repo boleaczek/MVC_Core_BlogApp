@@ -1,8 +1,10 @@
-﻿@model Blog.Models.ViewModels.AccountViewModel
+﻿@model Blog.Models.ViewModels.AccountCreateViewModel
 <form asp-action="Add" method="post">
     <label>Email</label>
-    <input asp-for="Email" />
+    <input asp-for="LoginData.Email" />
     <label>Password</label>
-    <input asp-for="Password" class="form-control" />
+    <input asp-for="LoginData.Password" />
+    <label>Admin account</label>
+    <input asp-for="IsAdmin" type="checkbox" />
     <input type="submit" value="Add user" />
 </form>
