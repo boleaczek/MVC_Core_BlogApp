@@ -16,12 +16,10 @@
     <table>
         <tr>POSTS</tr>
         <tr>
-            <td colspan="5"><a asp-action="Add">Add</a></td>
-        </tr>
-        <tr>
             <th>Id</th>
             <th>Title</th>
             <th>Publication Date</th>
+            <th>Writen By</th>
             <th></th>
             <th></th>
         </tr>
@@ -31,13 +29,13 @@
                 <td>@post.Id</td>
                 <td>@post.Title</td>
                 <td>@post.PublicationDate</td>
-                <td><a asp-action="Modify" asp-route-id="@post.Id">Modify</a></td>
+                <td>@post.AuthorName</td>
                 <td><a asp-controller="AdminPanel" asp-action="DeletePost" asp-route-id="@post.Id">Delete</a></td>
                 <td><a asp-action="CommentManager" asp-route-id="@post.Id">Manage Comments</a></td>
-</tr>
+            </tr>
         }
     </table>
-    @if (Model.CurrentUser.IsInRole(Blog.Authorization.BlogConstants.AdministratorRole))
+    @if (Model.CurrentUser.IsInRole(Blog.Authorization.BlogConstants.AdministratorRoleName))
     {
         <a asp-controller="UserManager" asp-action="Index">Manage Users</a>
     }

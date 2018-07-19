@@ -15,6 +15,11 @@ namespace Blog.Models
         [Required]
         public string Content { get; set; }
         public DateTime PublicationDate { get; set; }
+        [Required]
+        public string AuthorUserId { get; set; }
+        [Required]
+        public string AuthorName { get; set; }
+
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<PostTag> PostTags { get; } = new List<PostTag>();
     }

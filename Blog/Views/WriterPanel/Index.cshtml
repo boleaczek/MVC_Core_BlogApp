@@ -1,0 +1,14 @@
+﻿@model Blog.Models.ViewModels.WritersListViewModel
+
+<h2>Your posts:</h2>
+<ul>
+   @foreach (var post in Model.Posts)
+   {
+       @if(post.AuthorUserId == Model.WriterId)
+       {
+           <li><a asp-action="Modify" asp-route-id="@post.Id">@($"{post.Title} ({post.PublicationDate})")</a></li>
+       }
+   }
+</ul>
+
+<a asp-action="Add">Write new post!</a>

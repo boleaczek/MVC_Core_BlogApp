@@ -9,5 +9,6 @@ namespace Blog.Models.ViewModels
     {
         public AccountLoginViewModel LoginData { get; set; }
         public bool IsAdmin { get; set; }
+        public string AuthorName { get; set; }
     }
 }

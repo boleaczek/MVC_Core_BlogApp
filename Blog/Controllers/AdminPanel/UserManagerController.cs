@@ -48,7 +48,7 @@ namespace Blog.Controllers.AdminPanel
                 return RedirectToReferer();
             }
 
-            var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email };
+            var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email, Name = model.AuthorName };
             var result = await _userManager.CreateAsync(user, model.LoginData.Password);
 
             if (!result.Succeeded)
@@ -58,7 +58,7 @@ namespace Blog.Controllers.AdminPanel
 
             if(model.IsAdmin == true)
             {
-                var role = await _userContext.Roles.SingleOrDefaultAsync(r => r.Name == BlogConstants.AdministratorRole);
+                var role = await _userContext.Roles.SingleOrDefaultAsync(r => r.Name == BlogConstants.AdministratorRoleName);
                 var userRole = 
                 await _userContext.UserRoles.AddAsync(
                     new IdentityUserRole<string>()
@@ -92,7 +92,7 @@ namespace Blog.Controllers.AdminPanel
         [NonAction]
         bool UserIsAuthorized()
         {
-            return User.IsInRole(BlogConstants.AdministratorRole);
+            return User.IsInRole(BlogConstants.AdministratorRoleName);
         }
 
         [NonAction]

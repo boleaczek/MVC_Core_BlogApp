@@ -1,4 +1,5 @@
-﻿using Blog.Models;
+﻿using Blog.Authorization;
+using Blog.Models;
 using Blog.Models.Other;
 using Blog.Models.ViewModels;
 using Blog.UnitsOfWork;
@@ -33,6 +34,11 @@ namespace Blog.Controllers.AdminPanel
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if(!User.IsInRole(BlogConstants.AdministratorRoleName))
+            {
+                return RedirectToAction("Index", "WriterPanel");
+            }
+
             ICollection<Post> posts = await _blogUnitOfWork.Posts
                 .GetAll()
                 .OrderBy(post => post.PublicationDate)
@@ -73,58 +79,6 @@ namespace Blog.Controllers.AdminPanel
         }
 
         [HttpGet]
-        public async Task<IActionResult> Modify(int id)
-        {
-            Post post = await _blogUnitOfWork.Posts.SearchFor(p => p.Id == id)
-                .Include(p => p.PostTags)
-                .ThenInclude(e => e.Tag)
-                .FirstOrDefaultAsync();
-
-            PostTagNameViewModel postTagNameViewModel = new PostTagNameViewModel() { Post = post, TagNames = PostTagsToStringHelper(post.PostTags) };
-            return View(postTagNameViewModel);
-        }
-
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Add(PostTagNameViewModel postTagNameViewModel)
-        {
-            Post post = postTagNameViewModel.Post;
-            post.PublicationDate = DateTime.Now;
-            _blogUnitOfWork.Posts.Insert(post);
-            AddTags(post, postTagNameViewModel.TagNames);
-
-            await _blogUnitOfWork.SaveAsync();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Modify(PostTagNameViewModel postTagNameViewModel)
-        {
-            Post post = await _blogUnitOfWork.Posts.SearchFor(p => p.Id == postTagNameViewModel.Post.Id)
-                .Include(p => p.PostTags)
-                .ThenInclude(pt => pt.Tag)
-                .SingleOrDefaultAsync();
-
-            _blogUnitOfWork.PostTags.DeleteMany(post.PostTags);
-            await _blogUnitOfWork.SaveAsync();
-
-            post.Title = postTagNameViewModel.Post.Title;
-            post.Content = postTagNameViewModel.Post.Content;
-
-            _blogUnitOfWork.Posts.Update(post);
-            AddTags(post, postTagNameViewModel.TagNames);
-            await _blogUnitOfWork.SaveAsync();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
         public async Task<IActionResult> CommentManager(int id)
         {
             ICollection<Comment> comments = await _blogUnitOfWork.Comments
@@ -149,28 +103,7 @@ namespace Blog.Controllers.AdminPanel
             return RedirectToAction("Index");
         }
 
-       
-
         #region helpers
-
-        [NonAction]
-        void AddTags(Post post, string tags_string)
-        {
-            string[] tag_names = tags_string.Split();
-            Tag[] tags = new Tag[tag_names.Length];
-
-            for (int i = 0; i < tag_names.Length; i++)
-            {
-                tags[i] = _blogUnitOfWork.Tags.SearchFor(name => name.Name == tag_names[i]).SingleOrDefault();
-                if (tags[i] == null)
-                {
-                    tags[i] = new Tag() { Name = tag_names[i] };
-                    _blogUnitOfWork.Tags.Update(tags[i]);
-                }
-
-                _blogUnitOfWork.PostTags.Insert(new PostTag() { Tag = tags[i], Post = post });
-            }
-        }
 
         [NonAction]
         ICollection<Tag> GetTags(string tags_string)
@@ -186,17 +119,6 @@ namespace Blog.Controllers.AdminPanel
             return tags;
         }
 
-        [NonAction]
-        string PostTagsToStringHelper(ICollection<PostTag> tags)
-        {
-            string tags_string = "";
-            foreach (var posttag in tags)
-            {
-                tags_string += posttag.Tag.Name + " ";
-            }
-
-            return tags_string;
-        }
 
         #endregion
     }

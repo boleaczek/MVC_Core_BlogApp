@@ -51,6 +51,9 @@ namespace Blog
                 .AddEntityFrameworkStores<UserContext>()
                 .AddDefaultTokenProviders();
 
+            //services.AddDefaultIdentity<ApplicationUser>()
+            //     .AddEntityFrameworkStores<UserContext>();
+
             services.AddSingleton<IAuthorizationHandler, BlogAdminAuthorizationHandler>();
         }
 

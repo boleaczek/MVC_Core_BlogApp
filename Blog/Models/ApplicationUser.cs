@@ -8,5 +8,7 @@ namespace Blog.Models
 {
     public class ApplicationUser : IdentityUser, IBlogResource
     {
+        [PersonalData]
+        public string Name { get; set; }
     }
 }
