@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Models.Other
 {
-    public class BlogData
+    public class BlogData : IBlogResource
     {
         public string BlogName { get; set; }
         public string AuthorName { get; set; }

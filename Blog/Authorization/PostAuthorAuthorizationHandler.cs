@@ -25,9 +25,24 @@ namespace Blog.Authorization
                 return Task.CompletedTask;
             }
 
+            if (requirement.Name == BlogConstants.AddActionName)
+            {
+                context.Succeed(requirement);
+            }
+
             string userId = _userManager.GetUserId(context.User);
 
-            if (context.User.IsInRole("Admin") || userId == resource.AuthorUserId)
+            if (userId != resource.AuthorUserId)
+            {
+                return Task.CompletedTask;
+            }
+
+            if (requirement.Name == BlogConstants.ModifyActionName)
+            {
+                context.Succeed(requirement);
+            }
+
+            if (context.User.IsInRole(BlogConstants.AdministratorRoleName))
             {
                 context.Succeed(requirement);
             }

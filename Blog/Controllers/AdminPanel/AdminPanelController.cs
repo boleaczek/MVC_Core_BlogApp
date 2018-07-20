@@ -23,12 +23,14 @@ namespace Blog.Controllers.AdminPanel
         private readonly IBlogUnitOfWork _blogUnitOfWork;
         BlogData _blogData;
         IHostingEnvironment _hostingEnvironment;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork)
+        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork, IAuthorizationService authorizationService)
         {
             _blogData = blogData;
             _hostingEnvironment = env;
             _blogUnitOfWork = blogUnitOfWork;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -51,30 +53,49 @@ namespace Blog.Controllers.AdminPanel
         [HttpPost]
         public async Task<IActionResult> ModifyBlogData(BlogData blogData)
         {
-            _blogData.SaveData(blogData);
+            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
+
+            if (authorized.Succeeded)
+            {
+                _blogData.SaveData(blogData);
+            }
+
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> DeletePost(int id)
         {
             Post post = _blogUnitOfWork.Posts.GetAll().Include(p => p.Comments).Include(p => p.PostTags).Single(p => p.Id == id);
-            _blogUnitOfWork.Comments.DeleteMany(post.Comments);
-            _blogUnitOfWork.Posts.Delete(post);
-            await _blogUnitOfWork.SaveAsync();
+
+            var authorized = await _authorizationService.AuthorizeAsync(User, post, BlogAuthorization.Delete);
+            if (authorized.Succeeded)
+            {
+                _blogUnitOfWork.Comments.DeleteMany(post.Comments);
+                _blogUnitOfWork.Posts.Delete(post);
+                await _blogUnitOfWork.SaveAsync();
+            }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> UploadLogo(IFormFile logo)
         {
-            var filePath = _hostingEnvironment.WebRootPath;
-            filePath += @"\logo.png";
-            _blogData.ImagePath = @"\logo.png";
-            _blogData.SaveData(_blogData);
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
+
+            if (authorized.Succeeded)
             {
-                await logo.CopyToAsync(stream);
+
+                var filePath = _hostingEnvironment.WebRootPath;
+                filePath += @"\logo.png";
+                _blogData.ImagePath = @"\logo.png";
+                _blogData.SaveData(_blogData);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await logo.CopyToAsync(stream);
+                }
             }
+
             return RedirectToAction("Index");
         }
 
@@ -89,17 +110,31 @@ namespace Blog.Controllers.AdminPanel
         public async Task<IActionResult> DeleteComment(int id)
         {
             Comment comment = await _blogUnitOfWork.Comments.GetAll().Include(c => c.Post).SingleOrDefaultAsync(c => c.Id == id);
-            _blogUnitOfWork.Comments.Delete(comment);
+
+            var authorized = await _authorizationService.AuthorizeAsync(User, comment, BlogAuthorization.Delete);
             int redir_id = comment.Post.Id;
-            await _blogUnitOfWork.SaveAsync();
+
+            if (authorized.Succeeded)
+            {
+                _blogUnitOfWork.Comments.Delete(comment);
+                await _blogUnitOfWork.SaveAsync();
+            }
+
             return RedirectToAction("CommentManager", new { id = redir_id });
         }
 
         public async Task<IActionResult> DeleteTag(int id)
         {
             Tag tag = await _blogUnitOfWork.Tags.GetById(id);
-            _blogUnitOfWork.Tags.Delete(tag);
-            await _blogUnitOfWork.SaveAsync();
+
+            var authorized = await _authorizationService.AuthorizeAsync(User, tag, BlogAuthorization.Delete);
+
+            if (authorized.Succeeded)
+            {
+                _blogUnitOfWork.Tags.Delete(tag);
+                await _blogUnitOfWork.SaveAsync();
+            }
+
             return RedirectToAction("Index");
         }
 
