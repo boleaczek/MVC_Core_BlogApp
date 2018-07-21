@@ -32,9 +32,15 @@
         </li>
     </ul>
 </form>
-<img src="@Model.ImagePath" alt="No logo selected." />
-<form method="post" enctype="multipart/form-data" asp-controller="AdminPanel" asp-action="UploadLogo">
+<img src="~/logo.png" alt="No logo selected." />
+<form method="post" enctype="multipart/form-data" asp-action="UploadLogo">
     <label>Blog logo path.</label>
-    <input type="file" name="logo"/>
+    <input type="file" name="logo" />
     <input type="submit" value="Upload new logo." />
+</form>
+<img src="~/icon.ico" alt="No icon selected." />
+<form method="post" enctype="multipart/form-data" asp-action="UploadIcon">
+    <label>Tab icon path.</label>
+    <input type="file" name="icon" />
+    <input type="submit" value="Upload new icon." />
 </form>

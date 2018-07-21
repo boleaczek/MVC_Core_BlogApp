@@ -36,7 +36,7 @@ namespace Blog.Controllers.AdminPanel
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if(!User.IsInRole(BlogConstants.AdministratorRoleName))
+            if (!User.IsInRole(BlogConstants.AdministratorRoleName))
             {
                 return RedirectToAction("Index", "WriterPanel");
             }
@@ -84,16 +84,20 @@ namespace Blog.Controllers.AdminPanel
 
             if (authorized.Succeeded)
             {
+                await UploadFile("logo.png", logo);
+            }
 
-                var filePath = _hostingEnvironment.WebRootPath;
-                filePath += @"\logo.png";
-                _blogData.ImagePath = @"\logo.png";
-                _blogData.SaveData(_blogData);
+            return RedirectToAction("Index");
+        }
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await logo.CopyToAsync(stream);
-                }
+        [HttpPost]
+        public async Task<IActionResult> UploadIcon(IFormFile icon)
+        {
+            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
+
+            if (authorized.Succeeded)
+            {
+                await UploadFile("icon.ico", icon);
             }
 
             return RedirectToAction("Index");
@@ -154,7 +158,17 @@ namespace Blog.Controllers.AdminPanel
             return tags;
         }
 
+        [NonAction]
+        async Task UploadFile(string path, IFormFile file)
+        {
+            var filePath = _hostingEnvironment.WebRootPath;
+            filePath += $@"\{path}";
 
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+        }
         #endregion
     }
 }
