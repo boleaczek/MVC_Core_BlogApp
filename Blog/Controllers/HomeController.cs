@@ -28,14 +28,12 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewData["Title"] = "Index";
             ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
             return View(await GetPostTagDataViewModel(0));
         }
 
         public async Task<IActionResult> Pages(int page)
         {
-            ViewData["Title"] = "Pages";
             ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
             return View(await GetPostTagDataViewModel(page));
         }
@@ -49,7 +47,7 @@ namespace Blog.Controllers
             {
                 Post = post
             };
-            ViewData["Title"] = post.Title;
+            
             return View(postCommentViewModel);
         }
 

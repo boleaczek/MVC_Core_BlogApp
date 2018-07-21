@@ -35,7 +35,7 @@
             </tr>
         }
     </table>
-    @if (Model.CurrentUser.IsInRole(Blog.Authorization.BlogConstants.AdministratorRoleName))
+    @if (Model.CurrentUser.IsInRole(Blog.Security.BlogConstants.AdministratorRoleName))
     {
         <a asp-controller="UserManager" asp-action="Index">Manage Users</a>
     }

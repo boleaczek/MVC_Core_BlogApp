@@ -2,6 +2,7 @@
 
 @{
     Layout = "_Layout";
+    ViewData["Title"] = "Home";
 }
 @await Html.PartialAsync("PostsPartial", Model.Posts)
 @await Html.PartialAsync("PageNavigationPartial", (int)ViewBag.PagesCount)

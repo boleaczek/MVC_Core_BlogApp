@@ -24,7 +24,6 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewData["Title"] = "Archive";
             ICollection<Tag> tags = await _blogUnitOfWork.Tags
                 .GetAll()
                 .Include(t => t.PostTags)

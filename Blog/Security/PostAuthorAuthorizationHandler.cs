@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blog.Authorization
+namespace Blog.Security
 {
     public class PostAuthorAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Post>
     {
