@@ -64,6 +64,8 @@ namespace Blog.Controllers
                 post.Comments = new List<Comment>();
             }
 
+            comment.PublicationDate = DateTime.Now;
+
             unitOfWork.Comments.Insert(comment);
             post.Comments.Add(comment);
             

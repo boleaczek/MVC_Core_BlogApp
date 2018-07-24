@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Blog.Models
         public string Content { get; set; }
         [Required]
         public string Author { get; set; }
+        public DateTime PublicationDate { get; set; }
+        [JsonIgnore]
         public Post Post { get; set; }
     }
 }
