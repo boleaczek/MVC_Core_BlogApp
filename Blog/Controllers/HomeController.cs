@@ -16,7 +16,6 @@ namespace Blog.Controllers
 {
     public class HomeController : BlogController
     {
-        // GET: /<controller>/
         private readonly IBlogUnitOfWork unitOfWork;
 
         public HomeController(BlogData blogData, IBlogUnitOfWork blogUnitOfWork):base(blogData)

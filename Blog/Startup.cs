@@ -51,6 +51,17 @@ namespace Blog
                 .AddEntityFrameworkStores<UserContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AjaxCommentsPolicy", builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+
             //services.AddDefaultIdentity<ApplicationUser>()
             //     .AddEntityFrameworkStores<UserContext>();
 
@@ -78,6 +89,7 @@ namespace Blog
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseCors("AjaxCommentsPolicy");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "default",

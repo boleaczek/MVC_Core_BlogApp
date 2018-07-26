@@ -1,5 +1,7 @@
 ﻿using Blog.Models;
+using Blog.Models.ViewModels;
 using Blog.UnitsOfWork;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -20,6 +22,7 @@ namespace Blog.Controllers
         }
 
         [HttpGet]
+        [EnableCors("AjaxCommentsPolicy")]
         public async Task<string> Get(int id,
             [FromQuery(Name = "loaded")] int howManyLoaded)
         {
@@ -29,7 +32,13 @@ namespace Blog.Controllers
                 .Take(5)
                 .ToListAsync();
 
-            return JsonConvert.SerializeObject(comments).ToLower();
+            CommentViewModel commentViewModel = new CommentViewModel()
+            {
+                Comments = comments,
+                IsLast = (howManyLoaded + comments.Count) >= _blogUnitOfWork.Comments.GetAll().Count()
+            };
+
+            return JsonConvert.SerializeObject(commentViewModel);
         }
     }
 }

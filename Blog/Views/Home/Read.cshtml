@@ -27,17 +27,14 @@
             </li>
         </ul>
     </form>
-    <div id="comments_block">
-        @foreach (Blog.Models.Comment c in Model.Post.Comments)
-        {
-            <div class="comment">
-                <p class="comment_author_name">@c.Author</p>
-                <p class="comment_content">@c.Content</p>
-            </div>
-        }
-    </div>
+    @{ 
+        var Url = $"http://{Context.Request.Host}/comments/get/{Model.Post.Id}";
+    }
+    <div id="comments_app" data-url="@Url"></div>
+    <p>@Url</p>
 </div>
 <script src="~/JavaScript/GetDate.js"></script>
+<script src="~/JavaScript/comments/dist/main.js"></script>
 <script>
         document.getElementById("date").textContent += howLongAgo('@Model.Post.PublicationDate.ToUniversalTime().ToString("o")');
 </script>
