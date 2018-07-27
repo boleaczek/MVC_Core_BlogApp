@@ -34,6 +34,7 @@ namespace Blog.Controllers
         public async Task<IActionResult> Pages(int page)
         {
             ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
+
             return View(await GetPostTagDataViewModel(page));
         }
 

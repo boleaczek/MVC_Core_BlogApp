@@ -1,0 +1,13 @@
+﻿@model Blog.Models.ViewModels.ErrorViewModel;
+
+@{ 
+    Layout = "_Layout";
+    ViewData["Title"] = "Error";
+}
+<main class="error_info">
+    @if( Model.Code != null)
+    {
+        <p>@Model.Code</p>
+    }
+    <p>@Model.Message</p>
+</main>

@@ -62,9 +62,6 @@ namespace Blog
                     });
             });
 
-            //services.AddDefaultIdentity<ApplicationUser>()
-            //     .AddEntityFrameworkStores<UserContext>();
-
             services.AddSingleton<IAuthorizationHandler, BlogAdminAuthorizationHandler>();
         }
 
@@ -76,9 +73,10 @@ namespace Blog
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Error");
             }
             else
             {
