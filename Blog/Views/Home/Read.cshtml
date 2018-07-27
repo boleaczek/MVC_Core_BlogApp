@@ -30,11 +30,10 @@
     @{ 
         var Url = $"http://{Context.Request.Host}/comments/get/{Model.Post.Id}";
     }
-    <div id="comments_app" data-url="@Url"></div>
-    <p>@Url</p>
+    <div id="comments_app" data-url="@Url" data-loading-icon-path="/assets/load_icon.svg"></div>
 </div>
 <script src="~/JavaScript/GetDate.js"></script>
-<script src="~/JavaScript/comments/dist/main.js"></script>
+<script src="~/JavaScript/comments/main.js"></script>
 <script>
         document.getElementById("date").textContent += howLongAgo('@Model.Post.PublicationDate.ToUniversalTime().ToString("o")');
 </script>

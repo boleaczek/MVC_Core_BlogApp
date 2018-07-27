@@ -23,20 +23,20 @@ namespace Blog.Controllers.AdminPanel
         private readonly IBlogUnitOfWork _blogUnitOfWork;
         BlogData _blogData;
         IHostingEnvironment _hostingEnvironment;
-        private readonly IAuthorizationService _authorizationService;
+        private readonly ISecurityFacade _securityFacade;
 
-        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork, IAuthorizationService authorizationService)
+        public AdminPanelController(BlogData blogData, IHostingEnvironment env, IBlogUnitOfWork blogUnitOfWork, ISecurityFacade securityFacade)
         {
             _blogData = blogData;
             _hostingEnvironment = env;
+            _securityFacade = securityFacade;
             _blogUnitOfWork = blogUnitOfWork;
-            _authorizationService = authorizationService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (!User.IsInRole(BlogConstants.AdministratorRoleName))
+            if (!_securityFacade.IsInRole(BlogConstants.AdministratorRoleName))
             {
                 return RedirectToAction("Index", "WriterPanel");
             }
@@ -53,9 +53,9 @@ namespace Blog.Controllers.AdminPanel
         [HttpPost]
         public async Task<IActionResult> ModifyBlogData(BlogData blogData)
         {
-            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
+            var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
-            if (authorized.Succeeded)
+            if (authorized)
             {
                 _blogData.SaveData(blogData);
             }
@@ -67,8 +67,8 @@ namespace Blog.Controllers.AdminPanel
         {
             Post post = _blogUnitOfWork.Posts.GetAll().Include(p => p.Comments).Include(p => p.PostTags).Single(p => p.Id == id);
 
-            var authorized = await _authorizationService.AuthorizeAsync(User, post, BlogAuthorization.Delete);
-            if (authorized.Succeeded)
+            var authorized = await _securityFacade.IsAuthorized(post, BlogConstants.DeleteActionName);
+            if (authorized)
             {
                 _blogUnitOfWork.Comments.DeleteMany(post.Comments);
                 _blogUnitOfWork.Posts.Delete(post);
@@ -80,9 +80,9 @@ namespace Blog.Controllers.AdminPanel
         [HttpPost]
         public async Task<IActionResult> UploadLogo(IFormFile logo)
         {
-            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
+            var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
-            if (authorized.Succeeded)
+            if (authorized)
             {
                 await UploadFile("logo.png", logo);
             }
@@ -93,9 +93,8 @@ namespace Blog.Controllers.AdminPanel
         [HttpPost]
         public async Task<IActionResult> UploadIcon(IFormFile icon)
         {
-            var authorized = await _authorizationService.AuthorizeAsync(User, _blogData, BlogAuthorization.Modify);
-
-            if (authorized.Succeeded)
+            var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
+            if (authorized)
             {
                 await UploadFile("icon.ico", icon);
             }
@@ -115,10 +114,11 @@ namespace Blog.Controllers.AdminPanel
         {
             Comment comment = await _blogUnitOfWork.Comments.GetAll().Include(c => c.Post).SingleOrDefaultAsync(c => c.Id == id);
 
-            var authorized = await _authorizationService.AuthorizeAsync(User, comment, BlogAuthorization.Delete);
+            var authorized = await _securityFacade.IsAuthorized(comment, BlogConstants.DeleteActionName);
+
             int redir_id = comment.Post.Id;
 
-            if (authorized.Succeeded)
+            if (authorized)
             {
                 _blogUnitOfWork.Comments.Delete(comment);
                 await _blogUnitOfWork.SaveAsync();
@@ -131,9 +131,9 @@ namespace Blog.Controllers.AdminPanel
         {
             Tag tag = await _blogUnitOfWork.Tags.GetById(id);
 
-            var authorized = await _authorizationService.AuthorizeAsync(User, tag, BlogAuthorization.Delete);
+            var authorized = await _securityFacade.IsAuthorized(tag, BlogConstants.DeleteActionName);
 
-            if (authorized.Succeeded)
+            if (authorized)
             {
                 _blogUnitOfWork.Tags.Delete(tag);
                 await _blogUnitOfWork.SaveAsync();

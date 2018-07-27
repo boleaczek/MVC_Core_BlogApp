@@ -1,5 +1,6 @@
 ﻿using Blog.Models;
 using Blog.Models.ViewModels;
+using Blog.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,13 +12,11 @@ namespace Blog.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        readonly ISecurityFacade _securityFacade;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(ISecurityFacade securityFacade)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _securityFacade = securityFacade;
         }
 
         [HttpGet]
@@ -29,12 +28,13 @@ namespace Blog.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AccountLoginViewModel loginViewModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, false, false);
-            
-            if (result.Succeeded)
+            var result = await _securityFacade.LogIn(loginViewModel.Email, loginViewModel.Password);
+
+            if (result)
             {
                 return RedirectToAction("", "AdminPanel");
             }
+
             return RedirectToAction("","Home");
         }
     }

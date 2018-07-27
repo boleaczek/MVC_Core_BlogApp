@@ -51,13 +51,16 @@ namespace Blog
                 .AddEntityFrameworkStores<UserContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ISecurityFacade, SecurityFacade>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AjaxCommentsPolicy", builder =>
                     {
-                        builder.AllowAnyOrigin()
+                        builder.WithOrigins(Configuration.GetValue<string>("Host"))
                             .AllowAnyHeader()
-                            .AllowAnyMethod()
+                            .WithMethods("GET")
                             .AllowCredentials();
                     });
             });
@@ -76,10 +79,11 @@ namespace Blog
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
             if (env.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
+                app.UseDeveloperExceptionPage();
             }
             else
             {
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 

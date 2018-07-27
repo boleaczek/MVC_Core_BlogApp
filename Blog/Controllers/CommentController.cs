@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Controllers
@@ -28,14 +29,12 @@ namespace Blog.Controllers
         {
             ICollection<Comment> comments = await _blogUnitOfWork.Comments
                 .SearchFor(c => c.Post.Id == id)
-                .Skip(howManyLoaded)
-                .Take(5)
                 .ToListAsync();
 
             CommentViewModel commentViewModel = new CommentViewModel()
             {
-                Comments = comments,
-                IsLast = (howManyLoaded + comments.Count) >= _blogUnitOfWork.Comments.GetAll().Count()
+                Comments = comments.Skip(howManyLoaded).Take(5).ToList(),
+                IsLast = (howManyLoaded + comments.Count) >= comments.Count
             };
 
             return JsonConvert.SerializeObject(commentViewModel);
