@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Blog.UnitsOfWork;
 
 namespace Blog.Controllers.AdminPanel
 {
@@ -16,17 +17,13 @@ namespace Blog.Controllers.AdminPanel
     [Authorize]
     public class UserManagerController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAuthorizationService _authorizationService;
-        UserContext _userContext;
+        private readonly IAccountUnitOfWork _accountUnitOfWork;
+        private readonly ISecurityFacade _securityFacade;
 
-        public UserManagerController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, UserContext userContext, IAuthorizationService authorizationService)
+        public UserManagerController(IAccountUnitOfWork accountUnitOfWork, ISecurityFacade securityFacade)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _userContext = userContext;
-            _authorizationService = authorizationService;
+            _accountUnitOfWork = accountUnitOfWork;
+            _securityFacade = securityFacade;
         }
 
         [HttpGet]
@@ -34,7 +31,7 @@ namespace Blog.Controllers.AdminPanel
         {
             if (UserIsAuthorized())
             {
-                ICollection<ApplicationUser> users = await _userContext.Users.ToListAsync();
+                ICollection<ApplicationUser> users = await _accountUnitOfWork.Users.GetAll().ToListAsync();
                 return View(new UserManagerViewModel() { Users = users });
             }
             return RedirectToReferer();
@@ -49,23 +46,21 @@ namespace Blog.Controllers.AdminPanel
             }
 
             var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email, Name = model.AuthorName };
-            var result = await _userManager.CreateAsync(user, model.LoginData.Password);
-
-            if (!result.Succeeded)
-            {
-                //handle errors
-            }
+            
+            await _accountUnitOfWork.Users.Insert(user);
 
             if(model.IsAdmin == true)
             {
-                var role = await _userContext.Roles.SingleOrDefaultAsync(r => r.Name == BlogConstants.AdministratorRoleName);
-                var userRole = 
-                await _userContext.UserRoles.AddAsync(
+                var role = await _accountUnitOfWork.Roles.SearchFor(r => r.Name == BlogConstants.AdministratorRoleName).SingleOrDefaultAsync();
+                
+                _accountUnitOfWork.UserRoles.Insert(
                     new IdentityUserRole<string>()
                     {
                         RoleId = role.Id,
-                        UserId = user.Id });
-                await _userContext.SaveChangesAsync();
+                        UserId = user.Id
+                    });
+
+                await _accountUnitOfWork.SaveAsync();
             }
 
             return RedirectToAction("Index");
@@ -75,12 +70,12 @@ namespace Blog.Controllers.AdminPanel
         public async Task<IActionResult> Delete(string id)
         {
 
-            var userToRemove = await _userContext.Users.SingleOrDefaultAsync(u => u.Id == id);
-            var authorized = await _authorizationService.AuthorizeAsync(User, userToRemove, BlogAuthorization.Delete);
-            if (authorized.Succeeded)
+            var userToRemove = await _accountUnitOfWork.Users.GetById(id);
+            var authorized = await _securityFacade.IsAuthorized(userToRemove, BlogConstants.DeleteActionName);
+
+            if (authorized)
             {
-                _userContext.Remove(userToRemove);
-                await _userContext.SaveChangesAsync();
+                await _accountUnitOfWork.Users.Delete(userToRemove);
                 return RedirectToAction("Index");
             }
 
@@ -92,7 +87,7 @@ namespace Blog.Controllers.AdminPanel
         [NonAction]
         bool UserIsAuthorized()
         {
-            return User.IsInRole(BlogConstants.AdministratorRoleName);
+            return _securityFacade.IsInRole(BlogConstants.AdministratorRoleName);
         }
 
         [NonAction]

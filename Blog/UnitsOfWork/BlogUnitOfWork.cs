@@ -8,31 +8,19 @@ using System.Threading.Tasks;
 
 namespace Blog.UnitsOfWork
 {
-    public class BlogUnitOfWork : IBlogUnitOfWork
+    public class BlogUnitOfWork : UnitOfWork, IBlogUnitOfWork
     {
-        BlogContext context;
         public IRepository<Post> Posts { get;  set; }
         public IRepository<Tag> Tags { get; set; }
         public IRepository<Comment> Comments { get; set; }
         public IRepository<PostTag> PostTags { get; set; }
 
-        public BlogUnitOfWork(BlogContext context)
+        public BlogUnitOfWork(BlogContext context) : base(context)
         {
-            this.context = context;
             Posts = new Repository<Post>(context);
             Tags = new Repository<Tag>(context);
             Comments = new Repository<Comment>(context);
             PostTags = new Repository<PostTag>(context);
-        }
-
-        public async Task<int> SaveAsync()
-        {
-            return await context.SaveChangesAsync();
-        }
-
-        public int Save()
-        {
-            return context.SaveChanges();
         }
     }
 }

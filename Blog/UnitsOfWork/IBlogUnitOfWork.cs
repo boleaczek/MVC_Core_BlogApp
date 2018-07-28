@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace Blog.UnitsOfWork
 {
-    public interface IBlogUnitOfWork
+    public interface IBlogUnitOfWork : IUnitOfWork
     {
         IRepository<Post> Posts { get; set; }
         IRepository<Tag> Tags { get; set; }
         IRepository<Comment> Comments { get; set; }
         IRepository<PostTag> PostTags { get; set; }
-
-        Task<int> SaveAsync();
-        int Save();
     }
 }
