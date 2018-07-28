@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,5 +11,7 @@ namespace Blog.Security
         Task<bool> LogIn(string username, string password);
         Task<bool> IsAuthorized(object resource, string requirementName);
         bool IsInRole(string roleName);
+        Task<ApplicationUser> GetCurrentUser();
+        string GetCurrentUserId();
     }
 }

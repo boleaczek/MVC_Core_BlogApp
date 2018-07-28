@@ -26,6 +26,16 @@ namespace Blog.Security
             _signInManager = signInManager;
         }
 
+        public async Task<ApplicationUser> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(_httpContextAccesor.HttpContext.User);
+        }
+
+        public string GetCurrentUserId()
+        {
+            return _userManager.GetUserId(_httpContextAccesor.HttpContext.User);
+        }
+
         public async Task<bool> IsAuthorized(object resource, string requirementName)
         {
             OperationAuthorizationRequirement authorizationRequirement = new OperationAuthorizationRequirement() { Name = requirementName };

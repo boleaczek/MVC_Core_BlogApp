@@ -17,21 +17,19 @@ namespace Blog.Controllers.AdminPanel
     public class WriterPanelController : Controller
     {
         protected IBlogUnitOfWork _blogUnitOfWork;
-        private readonly IAuthorizationService _authorizationService;
-        private readonly UserManager<ApplicationUser> _userManager;
+        ISecurityFacade _securityFacade;
 
-        public WriterPanelController(IBlogUnitOfWork blogUnitOfWork, IAuthorizationService authorizationService, UserManager<ApplicationUser> userManager)
+        public WriterPanelController(IBlogUnitOfWork blogUnitOfWork, ISecurityFacade securityFacade)
         {
             _blogUnitOfWork = blogUnitOfWork;
-            _authorizationService = authorizationService;
-            _userManager = userManager;
+            _securityFacade = securityFacade;
         }
 
         public async Task<IActionResult> Index()
         {
             ICollection<Post> posts = await _blogUnitOfWork.Posts.GetAll().ToListAsync();
-            string writerId = _userManager.GetUserId(User);
-
+            string writerId = _securityFacade.GetCurrentUserId();
+            
             return View(
                 new WritersListViewModel()
                 {
@@ -50,8 +48,8 @@ namespace Blog.Controllers.AdminPanel
         public async Task<IActionResult> Add(PostTagNameViewModel postTagNameViewModel)
         {
             Post post = postTagNameViewModel.Post;
-            
-            ApplicationUser author = await _userManager.GetUserAsync(User);
+
+            ApplicationUser author = await _securityFacade.GetCurrentUser();
 
             post.PublicationDate = DateTime.Now;
             post.AuthorName = author.Name;
@@ -85,11 +83,11 @@ namespace Blog.Controllers.AdminPanel
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .SingleOrDefaultAsync();
-            var authorize = await _authorizationService.AuthorizeAsync(User, post, BlogAuthorization.Modify);
 
-            if (authorize.Succeeded)
+            var authorized = await _securityFacade.IsAuthorized(post, BlogConstants.ModifyActionName);
+
+            if (authorized)
             {
-
                 _blogUnitOfWork.PostTags.DeleteMany(post.PostTags);
                 await _blogUnitOfWork.SaveAsync();
 
