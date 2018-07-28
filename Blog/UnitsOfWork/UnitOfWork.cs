@@ -18,12 +18,12 @@ namespace Blog.UnitsOfWork
 
         public async Task<int> SaveAsync()
         {
-            return await context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         public int Save()
         {
-            return context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }

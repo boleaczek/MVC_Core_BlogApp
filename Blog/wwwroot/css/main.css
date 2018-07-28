@@ -1,174 +1,93 @@
-﻿* {
-    box-sizing: border-box;
+﻿body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    background-color: #f3f7c5;
+    margin: 0;
+    font-family: 'Anonymous Pro', monospace;
 }
 
-body {
-    background-color: #d7d7c1;
-    color: black;
-    font-family: Verdana;
-}
-
-a:link {
-    color: #ff6600;
-}
-
-a:visited {
-    color: #b34700;
-}
-
-#side_bar {
-    background-color: #392613;
+.menu_container {
+    /*flex*/
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /*color*/
+    background-color: #0f6a8e;
+    /*size*/
     height: 100%;
     width: 15%;
-    z-index: 1;
+    /*position*/
+    position: fixed;
     top: 0;
     left: 0;
-    overflow-x: hidden;
-    position: fixed;
-    float: left;
-    color: #b3b3b3;
+    /*font*/
+    color: #f3f7c5;
 }
 
-    #side_bar .blog_navigation:link {
-        color: #b3b3b3;
-        text-decoration: none;
+.navigation_menu {
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+}
+
+    .navigation_menu li {
+        background-color: #0b5370;
+        text-align: center;
+        margin-top: 5px;
+        padding: 1px;
     }
 
-    #side_bar .blog_navigation:visited {
-        color: #b3b3b3;
+    .navigation_menu li a {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
 
-.menu, .posts_list {
-    list-style-type: none;
-    padding-left: 0px;
-}
-
-#side_bar .menu li .blog_navigation {
-    display: block;
-    margin: 1%;
-    background-color: #130d06;
-}
-
-#logo {
-    max-width: 50%;
-    max-height: 30%;
-}
-
-.container {
-    margin-left: 15%;
-    margin-right: 15%;
-    padding-left: 1px;
-}
-
-.post, .post_preview, .sorted_posts_list, #tag_list {
-    background-color: #f5f5ef;
-}
-
-.post_preview {
-    text-align: center;
-}
-
-.container .blog_navigation {
-    color: #0d0d0d;
+.menu_container a:link, .menu_container a:visited {
+    color: #f3f7c5;
     text-decoration: none;
 }
 
-.tag {
-    color: #392613;
+.navigation_menu li a:hover, .logo:hover {
+    background-color: #1594c6;
 }
 
-.page_number:link {
-    background-color: #392613;
-    color: #b3b3b3;
-    font-size: larger;
+.content_container {
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.page_number:visited {
-    color: #b3b3b3;
+.logo {
+    margin-top: 5px;
+    border-radius: 80px;
 }
 
-.comment_input * {
-    width: 100%;
-    border: none;
+.blog_name {
+    font-family: 'Ubuntu Mono', monospace;
 }
 
-.button {
-    border: none;
-    background-color: #130d06;
-    color: #b3b3b3;
-}
+@media only screen and (max-width: 640px) {
 
-.main_navigation {
-    width: 100%;
-}
-
-.comment {
-    background-color: #f5f5ef;
-}
-
-.comment_author_name {
-    background-color: #392613;
-    color: #b3b3b3;
-}
-
-#hide_button {
-    top: 0;
-    left: 0;
-    z-index: 3;
-    position: fixed;
-}
-
-.comment_separator {
-    display: block;
-    background-color: #392613;
-    color: #b3b3b3;
-}
-
-.comment_content, .post {
-    padding: 0 10px 10px;
-}
-
-@media only screen and (max-width: 600px) {
-    #side_bar {
-        position: relative;
-        width: 100%;
-        float: none;
+    body {
+        flex-direction: column;
     }
 
-    #hide_button {
-        position: relative;
-    }
-
-    #blog_tittle {
-        width: 30%;
-        height: 30%;
-    }
-
-    #tags {
-        display: none;
-    }
-
-    #logo {
-        float: right;
-        max-width: 20%;
-        max-height: 20%;
+    .menu_container {
         top: 0;
-    }
-
-    #hide_button {
-        display: none;
-    }
-
-    .container {
-        margin: 0%;
+        left: 0;
+        position: initial;
         width: 100%;
+        flex-direction: column;
     }
 
-    .post {
-        margin-right: 0%;
+    .navigation_menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
     }
 
-    #comment_input_field {
-        height: 150px;
+    .navigation_menu  * {
+        width: 100%;
     }
 }

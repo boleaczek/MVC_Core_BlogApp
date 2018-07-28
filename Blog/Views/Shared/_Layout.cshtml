@@ -7,23 +7,20 @@
     <meta name="author" content="@ViewData["Author"]" />
     <link type="text/css" rel="stylesheet" href="~/css/main.css" />
     <link type="image/png" rel="icon" href="~/icon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Ubuntu+Mono" rel="stylesheet">
     <title>@ViewData["Title"] - @ViewData["BlogName"]</title>
 </head>
 <body>
-    <div>
-        <div>
-            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo"/></a>
-            <h1><a asp-controller="Home" asp-action="Index">@ViewData["BlogName"]</a></h1>
-        </div>
-        <div>
-            <p>@ViewData["Description"]</p>
-        </div>
-        <ul>
+    <div class="menu_container">
+        <a class="logo" asp-controller="Home" asp-action="Index"><img src="~/logo.png" alt="logo" /></a>
+        <h1 class="blog_name"><a asp-controller="Home" asp-action="Index">@ViewData["BlogName"]</a></h1>
+        <p class="description">@ViewData["Description"]</p>
+        <ul class="navigation_menu">
             <li><a asp-controller="Archive" asp-action="Index">Archive</a></li>
             <li><a asp-controller="About" asp-action="Index">About</a></li>
         </ul>
     </div>
-    <div>
+    <div class="content_container">
         @RenderBody()
     </div>
 </body>
