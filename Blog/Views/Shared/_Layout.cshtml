@@ -10,20 +10,20 @@
     <title>@ViewData["Title"] - @ViewData["BlogName"]</title>
 </head>
 <body>
-    <div id="side_bar">
+    <div>
         <div>
-            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo" class="logo"/></a>
-            <h1><a asp-controller="Home" asp-action="Index" class="blog_title blog_navigation">@ViewData["BlogName"]</a></h1>
+            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo"/></a>
+            <h1><a asp-controller="Home" asp-action="Index">@ViewData["BlogName"]</a></h1>
         </div>
-        <div class="description">
+        <div>
             <p>@ViewData["Description"]</p>
         </div>
-        <ul class="menu">
-            <li><a asp-controller="Archive" asp-action="Index" class="blog_navigation">Archive</a></li>
-            <li><a asp-controller="About" asp-action="Index" class="blog_navigation">About</a></li>
+        <ul>
+            <li><a asp-controller="Archive" asp-action="Index">Archive</a></li>
+            <li><a asp-controller="About" asp-action="Index">About</a></li>
         </ul>
     </div>
-    <div class="container body-content moveable">
+    <div>
         @RenderBody()
     </div>
 </body>

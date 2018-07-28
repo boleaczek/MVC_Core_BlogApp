@@ -4,26 +4,26 @@
     Layout = "_Layout";
     ViewData["Title"] = "Read";
 }
-<div id="app">
+<div>
     <main>
         <h1>@Model.Post.Title</h1>
         <p id="date">Published: </p>
         <p>By: @Model.Post.AuthorName</p>
-        <article class="post">
+        <article>
             <markdown content="@Model.Post.Content"></markdown>
         </article>
     </main>
     <form asp-action="WriteComment" asp-controller="Home">
         <input asp-for="@Model.Post.Id" value="@Model.Post.Id" type="hidden" />
-        <ul class="menu comment_input">
+        <ul>
             <li>
                 <input asp-for="@Model.Comment.Author" />
             </li>
             <li>
-                <textarea asp-for="@Model.Comment.Content" id="comment_input_field"></textarea>
+                <textarea asp-for="@Model.Comment.Content"></textarea>
             </li>
             <li>
-                <button type="submit" class="button" id="comment_submit_button">Post</button>
+                <button type="submit">Post</button>
             </li>
         </ul>
     </form>

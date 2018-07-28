@@ -5,11 +5,11 @@
 <main>
     @foreach (Blog.Models.Post post in Model)
     {
-        <div class="post_preview">
-            <h2><a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id" class="blog_navigation">@post.Title</a></h2>
+        <div>
+            <h2><a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id">@post.Title</a></h2>
             <p class="post_pub_date">@post.PublicationDate.ToUniversalTime().ToString("o")</p>
             <a>@post.AuthorName</a>
-            <p class="tag">
+            <p>
                 @foreach (Blog.Models.PostTag postTag in post.PostTags)
                 {
                     <a>@postTag.Tag.Name</a> 

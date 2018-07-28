@@ -8,9 +8,9 @@
     
 </head>
 <body>
-    <form asp-action="Add" id="app">
+    <form asp-action="Add">
         <input asp-for="Post.Title"  />
-        <textarea id="input" asp-for="Post.Content"></textarea>
+        <textarea asp-for="Post.Content" id="input"></textarea>
         <input asp-for="TagNames" />
         <input type="submit" value="Save" />
     </form>
