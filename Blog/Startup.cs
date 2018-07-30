@@ -53,6 +53,7 @@ namespace Blog
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ISecurityFacade, SecurityFacade>();
+            services.AddTransient<IAccountUnitOfWork, AccountUnitOfWork>();
 
             services.AddCors(options =>
             {

@@ -1,8 +1,8 @@
 ﻿@model int
 
-<nav>
+<nav class="pages_wraper">
     @for (int i = 0; i < Model; i++)
     {
-        <a asp-action="Pages" asp-route-page="@(i + 1)">@(i + 1)</a>
+        <a class="page_number" asp-action="Pages" asp-route-page="@(i + 1)">@(i + 1)</a>
     }
 </nav>

@@ -1,28 +1,28 @@
-﻿body {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    background-color: #f3f7c5;
+﻿html, body {
+    height: 100%;
+}
+
+body {
     margin: 0;
+    background-color: #f3f7c5;
+}
+
+#flex_container {
     font-family: 'Anonymous Pro', monospace;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: 100%;
 }
 
 .menu_container {
-    /*flex*/
     display: flex;
     align-items: center;
     flex-direction: column;
-    /*color*/
-    background-color: #0f6a8e;
-    /*size*/
-    height: 100%;
-    width: 15%;
-    /*position*/
-    position: fixed;
-    top: 0;
-    left: 0;
-    /*font*/
     color: #f3f7c5;
+    width: 15%;
+    background-color: #0f6a8e;
 }
 
 .navigation_menu {
@@ -38,11 +38,11 @@
         padding: 1px;
     }
 
-    .navigation_menu li a {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+        .navigation_menu li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
 
 .menu_container a:link, .menu_container a:visited {
     color: #f3f7c5;
@@ -54,8 +54,13 @@
 }
 
 .content_container {
-    margin-left: auto;
-    margin-right: auto;
+    width: 40%;
+}
+
+.post_preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo {
@@ -67,10 +72,63 @@
     font-family: 'Ubuntu Mono', monospace;
 }
 
+.post_title {
+    display: block;
+    background-color: #0f6a8e;
+    width: 100%;
+    text-align: center;
+}
+
+    .post_title a:link, .post_title a:visited {
+        color: #f3f7c5;
+        text-decoration: none;
+        display: block;
+    }
+
+    .post_title a:hover {
+        background-color: #f3f7c5;
+        color: #0f6a8e;
+    }
+
+.author_name {
+    font-weight: bold;
+    color: #0f6a8e;
+}
+
+.right_margin {
+    background: url('../assets/margin_image.jpg') repeat-y #0f6a8e;
+    background-size: cover;
+    width: 20%;
+    margin: 0;
+}
+
+.pages_wraper {
+    background-color: #0f6a8e;
+}
+
+.page_number {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    font: bold;
+    font-size: 25px;
+}
+
+    .page_number:visited, .page_number:link {
+        text-decoration: none;
+        color: #f3f7c5;
+    }
+
+    .page_number:hover {
+        color: #0f6a8e;
+        background-color: #f3f7c5;
+    }
+
 @media only screen and (max-width: 640px) {
 
-    body {
+    #flex_container {
         flex-direction: column;
+        align-items: center;
     }
 
     .menu_container {
@@ -78,6 +136,7 @@
         left: 0;
         position: initial;
         width: 100%;
+        height: auto;
         flex-direction: column;
     }
 
@@ -87,7 +146,12 @@
         justify-content: space-around;
     }
 
-    .navigation_menu  * {
+        .navigation_menu * {
+            width: 100%;
+        }
+
+    .right_margin {
         width: 100%;
+        height: 20%;
     }
 }
