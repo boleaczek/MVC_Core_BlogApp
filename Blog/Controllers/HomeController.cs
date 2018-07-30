@@ -1,16 +1,13 @@
-﻿using System;
+﻿using Blog.Models;
+using Blog.Models.Other;
+using Blog.Models.ViewModels;
+using Blog.UnitsOfWork;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blog.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using Blog.Models.Other;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Blog.UnitsOfWork;
-using Blog.Models.ViewModels;
 
 namespace Blog.Controllers
 {
@@ -34,15 +31,17 @@ namespace Blog.Controllers
         public async Task<IActionResult> Pages(int page)
         {
             ViewBag.PagesCount = unitOfWork.Posts.GetAll().Count() / 5;
-
             return View(await GetPostTagDataViewModel(page));
         }
 
         [HttpGet]
         public async Task<IActionResult> Read(int id)
         {
-            Post post = await unitOfWork.Posts.GetById(id);
-            post.Comments = await unitOfWork.Comments.SearchFor(comment => comment.Post.Id == id).ToListAsync();
+            Post post = await unitOfWork.Posts
+                    .SearchFor(p => p.Id == id)
+                    .Include(p => p.Comments)
+                    .SingleOrDefaultAsync();
+            
             PostCommentViewModel postCommentViewModel = new PostCommentViewModel()
             {
                 Post = post
