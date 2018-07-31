@@ -6,37 +6,41 @@
 }
 <div>
     <main>
-        <h1>@Model.Post.Title</h1>
-        <p id="date">Published: </p>
-        <p>By: @Model.Post.AuthorName</p>
-        <article>
+        <header class="post_info_wraper">
+            <h1 class="section_title">@Model.Post.Title</h1>
+            <p id="date">Published: </p>
+            <p>By: <span class="author_data">@Model.Post.AuthorName</span></p>
+        </header>
+        <article class="post_content_container">
             <markdown content="@Model.Post.Content"></markdown>
         </article>
     </main>
-    <form asp-action="WriteComment" asp-controller="Home">
+    <form class="comment_form" asp-action="WriteComment" asp-controller="Home">
         <input asp-for="@Model.Post.Id" value="@Model.Post.Id" type="hidden" />
-        <ul>
-            <li>
-                <input asp-for="@Model.Comment.Author" />
-            </li>
-            <li>
-                <textarea asp-for="@Model.Comment.Content"></textarea>
-            </li>
-            <li>
-                <button type="submit">Post</button>
-            </li>
-        </ul>
+        <label for="comment_author_input">Your name:</label>
+        <input asp-for="@Model.Comment.Author" id="comment_author_input" />
+        <label for="comment_content_input">Your comment:</label>
+        <textarea asp-for="@Model.Comment.Content" id="comment_content_input"></textarea>
+        <button type="submit">Post</button>
     </form>
-    @{ 
+    @{
         var Url = $"http://{Context.Request.Host}/comments/get/{Model.Post.Id}";
     }
     <div id="comments_app" data-url="@Url" data-loading-icon-path="/assets/load_icon.svg"></div>
 </div>
-<script src="~/JavaScript/GetDate.js"></script>
-<script src="~/JavaScript/comments/main.js"></script>
-<script>
-        document.getElementById("date").textContent += howLongAgo('@Model.Post.PublicationDate.ToUniversalTime().ToString("o")');
-</script>
 
+@section BottomOfThePage {
+
+    <script src="~/JavaScript/GetDate.js"></script>
+    <script src="~/JavaScript/comments/main.js"></script>
+    <script>
+        document.getElementById("date").textContent += howLongAgo('@Model.Post.PublicationDate.ToUniversalTime().ToString("o")');
+    </script>
+
+}
+
+@section AdditionalMeta {
+    <link type="text/css" rel="stylesheet" href="~/css/comments.css" />
+}
 
 

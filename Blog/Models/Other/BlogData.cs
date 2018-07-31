@@ -12,9 +12,9 @@ namespace Blog.Models.Other
         public string AuthorName { get; set; }
         public string MailAddress { get; set; }
         public string Description { get; set; }
-        public string PhoneNumber { get; set; }
         public string ImagePath { get; set; }
         public string IconPath { get; set; }
+        public string LongDescription { get; set; }
 
         public BlogData()
         {
@@ -23,9 +23,7 @@ namespace Blog.Models.Other
             AuthorName = dict["AuthorName"];
             MailAddress = dict["MailAddress"];
             Description = dict["Description"];
-            PhoneNumber = dict["PhoneNumber"];
-            ImagePath = dict["ImagePath"];
-            IconPath = dict["IconPath"];
+            LongDescription = dict["LongDescription"];
         }
 
         public void SaveData(BlogData newData)

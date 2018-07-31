@@ -7,3 +7,11 @@
 
 @await Html.PartialAsync("PostsPartial", Model.Posts)
 @await Html.PartialAsync("PageNavigationPartial", (int)ViewBag.PagesCount)
+
+@section BottomOfThePage
+{
+    <script src="~/JavaScript/GetDate.js"></script>
+    <script>
+        getDates('post_pub_date');
+    </script>
+}

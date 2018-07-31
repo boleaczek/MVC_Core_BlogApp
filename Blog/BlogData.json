@@ -1,1 +1,7 @@
-{"BlogName":"xxx","AuthorName":"author name","MailAddress":"author@example.com","Description":"Blog description2","PhoneNumber":"12345678","ImagePath":"\\favicon.ico","IconPath":"\\favicon.ico"}
+{
+  "AuthorName": "author name",
+  "BlogName": "xxx",
+  "Description": "Blog description2",
+  "MailAddress": "author@example.com",
+  "LongDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non quam est. Praesent vel cursus sem. Aenean eleifend egestas ultrices. Nullam lacinia purus sit amet nulla ultricies ultrices. Morbi efficitur erat dapibus metus venenatis, dapibus laoreet massa pulvinar. Maecenas suscipit velit quam, in fringilla dolor semper vitae. Integer dictum lorem diam, nec finibus lectus interdum vitae. Phasellus dui massa, mollis vel vulputate eu, cursus ut massa. Phasellus consequat rhoncus odio a vehicula. "
+}

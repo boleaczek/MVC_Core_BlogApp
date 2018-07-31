@@ -4,8 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div>
-    <h2>About</h2>
-    <p>@Model.AuthorName</p>
-    <p>@Model.MailAddress</p>
-    <p>@Model.PhoneNumber</p>
+    <h2 class="section_title">About</h2>
+    <section class="blog_description">
+        <p class="author_data">@Model.AuthorName</p>
+        <p class="author_data">@Model.MailAddress</p>
+        <p>@Model.LongDescription</p>
+    </section>
 </div>

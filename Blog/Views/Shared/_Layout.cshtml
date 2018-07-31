@@ -9,6 +9,7 @@
     <link type="image/png" rel="icon" href="~/icon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Ubuntu+Mono" rel="stylesheet">
     <title>@ViewData["Title"] - @ViewData["BlogName"]</title>
+    @RenderSection("AdditionalMeta", false)
 </head>
 <body>
     <div id="flex_container">
@@ -26,5 +27,6 @@
         </div>
         <div class="right_margin main_flex_item"></div>
     </div>
+    @RenderSection("BottomOfThePage", false)
 </body>
 </html>

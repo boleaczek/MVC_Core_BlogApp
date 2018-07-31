@@ -1,24 +1,24 @@
 ﻿@model ICollection<Blog.Models.Post>;
 @{
     Layout = null;
+
 }
+
 <main>
     @foreach (Blog.Models.Post post in Model)
     {
         <div class="post_preview">
-            <h2 class="post_title"><a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id">@post.Title</a></h2>
+            <h2 class="section_title"><a class="main_nav" asp-controller="Home" asp-action="Read" asp-route-id="@post.Id">@post.Title</a></h2>
             <p class="post_pub_date">@post.PublicationDate.ToUniversalTime().ToString("o")</p>
-            <p>Writen by: <span class="author_name">@post.AuthorName</span></p>
+            <p>Writen by: <span class="author_data">@post.AuthorName</span></p>
             <p>
                 @foreach (Blog.Models.PostTag postTag in post.PostTags)
                 {
-                    <a>@postTag.Tag.Name</a> 
+                    <a>@postTag.Tag.Name</a>
                 }
             </p>
         </div>
     }
 </main>
-<script src="~/JavaScript/GetDate.js"></script>
-<script>
-    getDates('post_pub_date');
-</script>
+
+
