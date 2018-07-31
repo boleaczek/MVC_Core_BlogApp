@@ -1,5 +1,4 @@
 ﻿@model ICollection<Blog.Models.Post>
-<!DOCTYPE html>
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Find Article";
@@ -7,6 +6,6 @@
 
 @foreach (var post in Model)
 {
-    <h2><a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id" class="blog_navigation">@post.Title</a></h2>
+    <h2><a asp-controller="Home" asp-action="Read" asp-route-id="@post.Id">@post.Title</a></h2>
 }
 

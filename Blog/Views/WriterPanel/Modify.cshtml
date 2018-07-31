@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 </head>
 <body>
-    <form asp-action="Modify" asp-controller="AdminPanel" id="app">
+    <form asp-action="Modify" asp-controller="AdminPanel">
         <input asp-for="Post.Id" value="@Model.Post.Id" type="hidden" />
         <input asp-for="Post.Title" value="@Model.Post.Title" />
-        <textarea id="input" asp-for="Post.Content"></textarea>
+        <textarea asp-for="Post.Content" id="input"></textarea>
         <input asp-for="TagNames" value="@Model.TagNames"/>
         <input type="submit" value="Save" />
     </form>

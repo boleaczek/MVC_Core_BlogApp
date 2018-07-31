@@ -1,174 +1,220 @@
-﻿* {
-    box-sizing: border-box;
+﻿html, body {
+    height: 100%;
 }
 
 body {
-    background-color: #d7d7c1;
-    color: black;
-    font-family: Verdana;
+    margin: 0;
+    background-color: #f3f7c5;
 }
 
-a:link {
-    color: #ff6600;
+.content_container {
+    width: 60%;
 }
 
-a:visited {
-    color: #b34700;
+#flex_container {
+    font-family: 'Anonymous Pro', monospace;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: 100%;
 }
 
-#side_bar {
-    background-color: #392613;
-    height: 100%;
+.menu_container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #f3f7c5;
     width: 15%;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-    position: fixed;
-    float: left;
-    color: #b3b3b3;
+    background-color: #0f6a8e;
 }
 
-    #side_bar .blog_navigation:link {
-        color: #b3b3b3;
-        text-decoration: none;
+.navigation_menu {
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+}
+
+    .navigation_menu li {
+        background-color: #0b5370;
+        text-align: center;
+        margin-top: 5px;
+        padding: 1px;
     }
 
-    #side_bar .blog_navigation:visited {
-        color: #b3b3b3;
-    }
+        .navigation_menu li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
 
-.menu, .posts_list {
-    list-style-type: none;
-    padding-left: 0px;
-}
-
-#side_bar .menu li .blog_navigation {
-    display: block;
-    margin: 1%;
-    background-color: #130d06;
-}
-
-#logo {
-    max-width: 50%;
-    max-height: 30%;
-}
-
-.container {
-    margin-left: 15%;
-    margin-right: 15%;
-    padding-left: 1px;
-}
-
-.post, .post_preview, .sorted_posts_list, #tag_list {
-    background-color: #f5f5ef;
-}
-
-.post_preview {
-    text-align: center;
-}
-
-.container .blog_navigation {
-    color: #0d0d0d;
+.menu_container a:link, .menu_container a:visited {
+    color: #f3f7c5;
     text-decoration: none;
 }
 
-.tag {
-    color: #392613;
+.navigation_menu li a:hover, .logo:hover {
+    background-color: #1594c6;
 }
 
-.page_number:link {
-    background-color: #392613;
-    color: #b3b3b3;
-    font-size: larger;
+.post_preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.page_number:visited {
-    color: #b3b3b3;
+.logo {
+    margin-top: 5px;
+    border-radius: 80px;
 }
 
-.comment_input * {
+.blog_name {
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+.section_title {
     width: 100%;
-    border: none;
+    text-align: center;
+    background-color: #0f6a8e;
+    color: #f3f7c5;
 }
 
-.button {
-    border: none;
-    background-color: #130d06;
-    color: #b3b3b3;
+.author_data, .tag_name {
+    font-weight: bold;
+    color: #0f6a8e;
 }
 
-.main_navigation {
-    width: 100%;
+.right_margin {
+    background: url('../assets/margin_image.jpg') repeat-y #0f6a8e;
+    background-size: cover;
+    width: 20%;
+    margin: 0;
 }
 
-.comment {
-    background-color: #f5f5ef;
+.pages_wraper {
+    background-color: #0f6a8e;
 }
 
-.comment_author_name {
-    background-color: #392613;
-    color: #b3b3b3;
+.page_number {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    font: bold;
+    font-size: 25px;
 }
 
-#hide_button {
-    top: 0;
-    left: 0;
-    z-index: 3;
-    position: fixed;
-}
-
-.comment_separator {
+.main_nav:visited, .main_nav:link {
     display: block;
-    background-color: #392613;
-    color: #b3b3b3;
+    text-decoration: none;
+    color: #f3f7c5;
+    background-color: #0f6a8e;
+    width: 100%;
 }
 
-.comment_content, .post {
-    padding: 0 10px 10px;
+.main_nav:hover {
+    color: #0f6a8e;
+    background-color: #f3f7c5;
 }
 
-@media only screen and (max-width: 600px) {
-    #side_bar {
-        position: relative;
-        width: 100%;
-        float: none;
+.post_info_wraper {
+    text-align: center;
+}
+
+.post_content_container, .blog_description {
+    border-width: 5px 0;
+    border-style: dotted;
+    border-color: #0f6a8e;
+}
+
+.comment_form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+    .comment_form button {
+        background-color: #0f6a8e;
+        color: #f3f7c5;
+        border: none;
     }
 
-    #hide_button {
-        position: relative;
+#comment_content_input, #comment_author_input {
+    border-color: #b5c6ce;
+    border-style: solid;
+    border-width: thin;
+}
+
+.archive_navigation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.tag_nav {
+    background-color: #0f6a8e;
+    border: none;
+    color: #f3f7c5;
+    padding: 5px 10px 5px 10px;
+    font-size: 21px;
+}
+
+.tag_posts_list {
+    list-style: none;
+    padding: 0;
+}
+
+.tag_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.post_tag_name {
+    padding: 5px;
+    margin: 5px;
+}
+
+    .post_tag_name:link, .post_tag_name:visited {
+        color: #608a9b;
+        font-weight: bold;
     }
 
-    #blog_tittle {
-        width: 30%;
-        height: 30%;
+@media only screen and (max-width: 640px) {
+    #flex_container {
+        flex-direction: column;
+        align-items: center;
     }
 
-    #tags {
-        display: none;
-    }
-
-    #logo {
-        float: right;
-        max-width: 20%;
-        max-height: 20%;
+    .menu_container {
         top: 0;
-    }
-
-    #hide_button {
-        display: none;
-    }
-
-    .container {
-        margin: 0%;
+        left: 0;
+        position: initial;
         width: 100%;
+        height: auto;
+        flex-direction: column;
     }
 
-    .post {
-        margin-right: 0%;
+    .navigation_menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
     }
 
-    #comment_input_field {
-        height: 150px;
+        .navigation_menu * {
+            width: 100%;
+        }
+
+    .right_margin {
+        width: 100%;
+        height: 20%;
+    }
+
+    .archive_navigation {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .content_container {
+        width: 90%;
     }
 }

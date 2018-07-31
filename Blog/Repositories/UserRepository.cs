@@ -46,9 +46,9 @@ namespace Blog.Repositories
             return await _users.SingleOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task Insert(ApplicationUser user)
+        public async Task Insert(ApplicationUser user, string password)
         {
-            await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user, password);
         }
 
         public IQueryable<ApplicationUser> SearchFor(Expression<Func<ApplicationUser, bool>> predicate)

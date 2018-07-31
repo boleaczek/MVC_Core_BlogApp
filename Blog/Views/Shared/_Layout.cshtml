@@ -7,24 +7,26 @@
     <meta name="author" content="@ViewData["Author"]" />
     <link type="text/css" rel="stylesheet" href="~/css/main.css" />
     <link type="image/png" rel="icon" href="~/icon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Ubuntu+Mono" rel="stylesheet">
     <title>@ViewData["Title"] - @ViewData["BlogName"]</title>
+    @RenderSection("AdditionalMeta", false)
 </head>
 <body>
-    <div id="side_bar">
-        <div>
-            <a asp-controller="Home" asp-action="Index" ><img src="~/logo.png" alt="logo" class="logo"/></a>
-            <h1><a asp-controller="Home" asp-action="Index" class="blog_title blog_navigation">@ViewData["BlogName"]</a></h1>
+    <div id="flex_container">
+        <div class="menu_container main_flex_item">
+            <a class="logo" asp-controller="Home" asp-action="Index"><img src="~/logo.png" alt="logo" /></a>
+            <h1 class="blog_name"><a asp-controller="Home" asp-action="Index">@ViewData["BlogName"]</a></h1>
+            <p class="description">@ViewData["Description"]</p>
+            <ul class="navigation_menu">
+                <li><a asp-controller="Archive" asp-action="Index">Archive</a></li>
+                <li><a asp-controller="About" asp-action="Index">About</a></li>
+            </ul>
         </div>
-        <div class="description">
-            <p>@ViewData["Description"]</p>
+        <div class="content_container main_flex_item">
+            @RenderBody()
         </div>
-        <ul class="menu">
-            <li><a asp-controller="Archive" asp-action="Index" class="blog_navigation">Archive</a></li>
-            <li><a asp-controller="About" asp-action="Index" class="blog_navigation">About</a></li>
-        </ul>
+        <div class="right_margin main_flex_item"></div>
     </div>
-    <div class="container body-content moveable">
-        @RenderBody()
-    </div>
+    @RenderSection("BottomOfThePage", false)
 </body>
 </html>

@@ -10,7 +10,7 @@ namespace Blog.Repositories
 {
     public interface IUserRepository
     {
-        Task Insert(ApplicationUser user);
+        Task Insert(ApplicationUser user, string password);
         Task Delete(ApplicationUser user);
         Task DeleteMany(ICollection<ApplicationUser> users);
         Task Update(ApplicationUser user);

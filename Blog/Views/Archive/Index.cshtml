@@ -3,31 +3,26 @@
     Layout = "_Layout";
     ViewData["Title"] = "Archive";
 }
-<div id="app">
-    <div id="tag_list">
-        <h2>Featured tags:</h2>
-        <span>
+<div>
+    <div>
+        <h2 class="section_title">Featured tags:</h2>
+        <nav class="archive_navigation">
             @foreach (var tag in Model)
             {
-                <button class="button" v-on:click="scrollTo('@($"#{tag.Name}_destination")')">@tag.Name</button>
+                <button class="tag_nav main_nav">@tag.Name</button>
             }
-        </span>
+        </nav>
     </div>
     @foreach (var tag in Model)
     {
-        <div class="sorted_posts_list">
-            <p class="tag" id="@($"{tag.Name}_destination")"><b><i>@tag.Name</i></b></p>
-            <ul class="posts_list">
+        <div class="tag_container">
+            <p class="tag_name">@tag.Name</p>
+            <ul class="tag_posts_list">
                 @foreach (var post in tag.PostTags)
                 {
-                    <li><a asp-controller="Home" asp-action="Read" asp-route-id="@post.PostId" class="blog_navigation">@post.Post.Title</a></li>
+                    <li><a class="post_tag_name" asp-controller="Home" asp-action="Read" asp-route-id="@post.PostId">@post.Post.Title</a></li>
                 }
             </ul>
         </div>
     }
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-<script src="~/JavaScript/PageNavigator.js"></script>
-<script>
-    let pageNavigator = navigate("#app");
-</script>

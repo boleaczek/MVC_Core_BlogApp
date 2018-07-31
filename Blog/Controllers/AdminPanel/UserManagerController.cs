@@ -45,9 +45,9 @@ namespace Blog.Controllers.AdminPanel
                 return RedirectToReferer();
             }
 
-            var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email, Name = model.AuthorName };
+            var user = new ApplicationUser { UserName = model.LoginData.Email, Email = model.LoginData.Email, Name = model.AuthorName};
             
-            await _accountUnitOfWork.Users.Insert(user);
+            await _accountUnitOfWork.Users.Insert(user, model.LoginData.Password);
 
             if(model.IsAdmin == true)
             {
@@ -59,7 +59,6 @@ namespace Blog.Controllers.AdminPanel
                         RoleId = role.Id,
                         UserId = user.Id
                     });
-
                 await _accountUnitOfWork.SaveAsync();
             }
 
