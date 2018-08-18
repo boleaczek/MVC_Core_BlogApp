@@ -21,14 +21,13 @@ namespace Blog
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -40,22 +39,16 @@ namespace Blog
                                         .Build();
                 })
                  .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddTransient<BlogData>();
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             string mainDbConnectionString;
             string userDbConnectionString;
 
-            if(Environment.GetEnvironmentVariable("Env") == "production")
-            {
-                mainDbConnectionString = "mainDB";
-                userDbConnectionString = "identityDB";
-            }
-            else
-            {
-                mainDbConnectionString = "DefaultConnection";
-                userDbConnectionString = "IdentityDb";
-            }
+            mainDbConnectionString = "mainDB";
+            userDbConnectionString = "userDB";
+
 
             services.AddDbContext<BlogContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
