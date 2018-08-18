@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,12 @@ namespace Blog.Models.Other
         public string IconPath { get; set; }
         public string LongDescription { get; set; }
 
-        public BlogData()
+        IHostingEnvironment environment;
+
+        public BlogData(IHostingEnvironment env)
         {
-            Dictionary<string,string> dict = JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText(@"BlogData.json"));
+            environment = env;
+            Dictionary<string,string> dict = JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText($"{environment.WebRootPath}\\BlogData.json"));
             BlogName = dict["BlogName"];
             AuthorName = dict["AuthorName"];
             MailAddress = dict["MailAddress"];
@@ -28,7 +32,7 @@ namespace Blog.Models.Other
 
         public void SaveData(BlogData newData)
         {
-            System.IO.File.WriteAllText(@"BlogData.json", JsonConvert.SerializeObject(newData));
+            System.IO.File.WriteAllText($"{environment.WebRootPath}\\BlogData.json", JsonConvert.SerializeObject(newData));
         }
     }
 }

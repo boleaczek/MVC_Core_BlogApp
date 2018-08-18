@@ -53,8 +53,8 @@ namespace Blog
             }
             else
             {
-                mainDbConnectionString = "mainDb";
-                userDbConnectionString = "identityDb";
+                mainDbConnectionString = "mainDB";
+                userDbConnectionString = "identityDB";
             }
 
             services.AddDbContext<BlogContext>(options =>
