@@ -35,8 +35,6 @@ namespace Blog.Controllers
                 IsLast = (howManyLoaded + comments.Count) >= comments.Count
             };
 
-            Thread.Sleep(10000);
-
             return JsonConvert.SerializeObject(commentViewModel);
         }
     }
