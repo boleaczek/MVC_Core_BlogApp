@@ -46,7 +46,7 @@ namespace Blog
             string mainDbConnectionString;
             string userDbConnectionString;
 
-            if(Environment.GetEnvironmentVariable("Env") == "production")
+            if(Environment.GetEnvironmentVariable("env") == "production")
             {
                 mainDbConnectionString = "mainDB";
                 userDbConnectionString = "identityDB";
