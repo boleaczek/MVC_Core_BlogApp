@@ -21,7 +21,6 @@ namespace Blog
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
-        public IHostingEnvironment Environment { get; set; }
         
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -47,7 +46,7 @@ namespace Blog
             string mainDbConnectionString;
             string userDbConnectionString;
 
-            if(Environment.IsDevelopment())
+            if(Environment.GetEnvironmentVariable("Env") == "production")
             {
                 mainDbConnectionString = "DefaultConnection";
                 userDbConnectionString = "IdentityDb";
@@ -88,10 +87,9 @@ namespace Blog
             services.AddSingleton<IAuthorizationHandler, BlogAdminAuthorizationHandler>();
         }
 
-        public Startup(IHostingEnvironment env, IConfiguration config)
+        public Startup(IConfiguration config)
         {
             Configuration = config;
-            Environment = env;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
