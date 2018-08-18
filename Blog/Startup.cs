@@ -21,6 +21,7 @@ namespace Blog
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
+        public IHostingEnvironment Environment { get; set; }
         
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -42,10 +43,28 @@ namespace Blog
                  .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<BlogData>();
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
+
+            string mainDbConnectionString;
+            string userDbConnectionString;
+
+            if(Environment.IsDevelopment())
+            {
+                mainDbConnectionString = "mainDb";
+                userDbConnectionString = "identityDb";
+            }
+            else
+            {
+                mainDbConnectionString = "DefaultConnection";
+                userDbConnectionString = "IdentityDb";
+            }
+
             services.AddDbContext<BlogContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                 options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
             services.AddDbContext<UserContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityDb")));
+                options.UseSqlServer(Configuration.GetConnectionString(userDbConnectionString)));
+
+            services.BuildServiceProvider().GetService<BlogContext>().Database.Migrate();
+            services.BuildServiceProvider().GetService<UserContext>().Database.Migrate();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>()
@@ -72,6 +91,7 @@ namespace Blog
         public Startup(IHostingEnvironment env, IConfiguration config)
         {
             Configuration = config;
+            Environment = env;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
