@@ -48,13 +48,13 @@ namespace Blog
 
             if(Environment.GetEnvironmentVariable("Env") == "production")
             {
-                mainDbConnectionString = "DefaultConnection";
-                userDbConnectionString = "IdentityDb";
+                mainDbConnectionString = "mainDB";
+                userDbConnectionString = "identityDB";
             }
             else
             {
-                mainDbConnectionString = "mainDB";
-                userDbConnectionString = "identityDB";
+                mainDbConnectionString = "DefaultConnection";
+                userDbConnectionString = "IdentityDb";
             }
 
             services.AddDbContext<BlogContext>(options =>
