@@ -15,13 +15,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Blog.Security;
-
+using System.Diagnostics;
 namespace Blog
 {
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
-
+        IHostingEnvironment Env { get; set; }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -49,6 +49,7 @@ namespace Blog
             mainDbConnectionString = "mainDB";
             userDbConnectionString = "userDB";
 
+            Trace.WriteLine(Configuration.GetConnectionString(mainDbConnectionString));
 
             services.AddDbContext<BlogContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
@@ -80,7 +81,7 @@ namespace Blog
             services.AddSingleton<IAuthorizationHandler, BlogAdminAuthorizationHandler>();
         }
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env )
         {
             Configuration = config;
         }
