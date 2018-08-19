@@ -20,5 +20,6 @@ namespace Blog.Security
         public const string AddActionName = "Add";
 
         public const string AdministratorRoleName = "Admin";
+        public const string WriterRoleName = "Writer";
     }
 }
