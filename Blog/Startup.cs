@@ -46,8 +46,16 @@ namespace Blog
             string mainDbConnectionString;
             string userDbConnectionString;
 
+-            if(Environment.GetEnvironmentVariable("env") == "production")
+-            {
                 mainDbConnectionString = "mainDB";
                 userDbConnectionString = "identityDB";
+-            }
+-            else
+-            {
+-                mainDbConnectionString = "DefaultConnection";
+-                userDbConnectionString = "IdentityDb";
+-            }
 
             services.AddDbContext<BlogContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
