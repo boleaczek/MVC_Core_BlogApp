@@ -21,7 +21,7 @@ namespace Blog
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                AdminSeed.Initialize(services);
+                //AdminSeed.Initialize(services);
             }
 
             host.Run();
