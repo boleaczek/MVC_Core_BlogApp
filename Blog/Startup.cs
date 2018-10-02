@@ -101,7 +101,7 @@ namespace Blog
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseIdentity();
+            app.UseAuthentication();
             app.UseCors("AjaxCommentsPolicy");
             app.UseMvc(routes =>
             {
