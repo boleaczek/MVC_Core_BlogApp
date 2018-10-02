@@ -49,7 +49,7 @@ namespace Blog
             if(Environment.GetEnvironmentVariable("env") == "production")
             {
                 mainDbConnectionString = "mainDB";
-                userDbConnectionString = "mainDB";
+                userDbConnectionString = "identityDB";
             }
             else
             {
