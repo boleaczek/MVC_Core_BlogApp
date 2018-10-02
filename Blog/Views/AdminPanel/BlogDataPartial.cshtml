@@ -7,29 +7,17 @@
 
 <form asp-action="ModifyBlogData" asp-controller="AdminPanelController">
     <ul>
-        <li>
-            <label>Blog Name</label>
-            <input asp-for="BlogName" value="@Model.BlogName" />
-        </li>
-        <li>
-            <label>Author Name</label>
-            <input asp-for="AuthorName" value="@Model.AuthorName" />
-        </li>
-        <li>
-            <label>Email Address</label>
-            <input asp-for="MailAddress" value="@Model.MailAddress" />
-        </li>
-        <li>
-            <label>Description</label>
-            <textarea asp-for="Description">@Model.Description</textarea>
-        </li>
-        <li>
-            <label>Long description</label>
-            <input asp-for="LongDescription" value="@Model.LongDescription" />
-        </li>
-        <li>
-            <input type="submit" value="Change" />
-        </li>
+        <label>Blog Name</label>
+        <input asp-for="BlogName" value="@Model.BlogName" />
+        <label>Author Name</label>
+        <input asp-for="AuthorName" value="@Model.AuthorName" />
+        <label>Email Address</label>
+        <input asp-for="MailAddress" value="@Model.MailAddress" />
+        <label>Description</label>
+        <textarea asp-for="Description">@Model.Description</textarea>
+        <label>Long description</label>
+        <input asp-for="LongDescription" value="@Model.LongDescription" />
+        <input type="submit" value="Change" />
     </ul>
 </form>
 <img src="~/logo.png" alt="No logo selected." />
