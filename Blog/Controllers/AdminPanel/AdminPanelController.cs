@@ -50,25 +50,15 @@ namespace Blog.Controllers.AdminPanel
             return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags, CurrentUser = User });
         }
 
-        // <label>Blog Name</label>
-        // <input asp-for="BlogName" value="@Model.BlogName" />
-        // <label>Author Name</label>
-        // <input asp-for="AuthorName" value="@Model.AuthorName" />
-        // <label>Email Address</label>
-        // <input asp-for="MailAddress" value="@Model.MailAddress" />
-        // <label>Description</label>
-        // <textarea asp-for="Description" value="@Model.Description"></textarea>
-        // <label>Long description</label>
-        // <input asp-for="LongDescription" value="@Model.LongDescription" />
-        // <input type="submit" value="Change" />
-        public async Task<string> ModifyBlogData(string blogName, string authorName, string mailAddress, string description, string longDescription)
+        public async Task<string> ModifyBlogData(
+            [FromForm] string blogName, 
+            [FromForm] string authorName, 
+            [FromForm] string mailAddress, 
+            [FromForm] string description, 
+            [FromForm] string longDescription)
         {
             var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
-            if (authorized)
-            {
-                _blogData.SaveData(blogData);
-            }
 
             return "Hello";
         }
