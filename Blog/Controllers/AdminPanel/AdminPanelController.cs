@@ -50,15 +50,15 @@ namespace Blog.Controllers.AdminPanel
             return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags, CurrentUser = User });
         }
 
-        public async Task<string> ModifyBlogData(
-            [FromForm] string blogName, 
-            [FromForm] string authorName, 
-            [FromForm] string mailAddress, 
-            [FromForm] string description, 
-            [FromForm] string longDescription)
+        
+        public async Task<string> ModifyBlogData([FromForm] BlogData blogData)
         {
             var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
+            if (authorized)
+            {
+                _blogData.SaveData(blogData);
+            }
 
             return "Hello";
         }
