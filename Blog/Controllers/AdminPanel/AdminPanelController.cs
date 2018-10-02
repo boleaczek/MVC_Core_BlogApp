@@ -50,7 +50,7 @@ namespace Blog.Controllers.AdminPanel
             return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags, CurrentUser = User });
         }
 
-        public async Task<IActionResult> ModifyBlogData(BlogData blogData)
+        public async Task<string> ModifyBlogData(BlogData blogData)
         {
             var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
@@ -59,7 +59,7 @@ namespace Blog.Controllers.AdminPanel
                 _blogData.SaveData(blogData);
             }
 
-            return RedirectToAction("Index");
+            return "Hello";
         }
 
         public async Task<IActionResult> DeletePost(int id)
