@@ -50,7 +50,6 @@ namespace Blog.Controllers.AdminPanel
             return View(new AdminPanelViewModel() { BlogData = _blogData, Posts = posts, Tags = tags, CurrentUser = User });
         }
 
-        [HttpPost]
         public async Task<IActionResult> ModifyBlogData(BlogData blogData)
         {
             var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
