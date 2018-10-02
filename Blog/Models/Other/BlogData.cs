@@ -13,8 +13,6 @@ namespace Blog.Models.Other
         public string AuthorName { get; set; }
         public string MailAddress { get; set; }
         public string Description { get; set; }
-        public string ImagePath { get; set; }
-        public string IconPath { get; set; }
         public string LongDescription { get; set; }
 
         IHostingEnvironment environment;
