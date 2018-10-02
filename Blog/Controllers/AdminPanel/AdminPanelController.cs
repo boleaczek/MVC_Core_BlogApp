@@ -53,12 +53,12 @@ namespace Blog.Controllers.AdminPanel
         [HttpPost]
         public async Task<IActionResult> ModifyBlogData(BlogData blogData)
         {
-            var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
+            // var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
-            if (authorized)
-            {
+            // if (authorized)
+            // {
                 _blogData.SaveData(blogData);
-            }
+            // }
 
             return RedirectToAction("Index");
         }
