@@ -18,9 +18,9 @@
     <form class="comment_form" asp-action="WriteComment" asp-controller="Home">
         <input asp-for="@Model.Post.Id" value="@Model.Post.Id" type="hidden" />
         <label for="comment_author_input">Your name:</label>
-        <input min="3" asp-for="@Model.Comment.Author" id="comment_author_input" />
+        <input pattern=".{3,}" required asp-for="@Model.Comment.Author" id="comment_author_input" />
         <label for="comment_content_input">Your comment:</label>
-        <textarea min="5" asp-for="@Model.Comment.Content" id="comment_content_input"></textarea>
+        <textarea pattern=".{5,10}" required asp-for="@Model.Comment.Content" id="comment_content_input"></textarea>
         <input type="submit" value="Post" />
     </form>
     @{
