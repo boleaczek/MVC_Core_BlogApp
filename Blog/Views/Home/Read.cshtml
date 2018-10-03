@@ -24,7 +24,7 @@
         <button type="submit">Post</button>
     </form>
     @{
-        var Url = $"http://{Context.Request.Host}/comments/get/{Model.Post.Id}";
+        var Url = $"https://{Context.Request.Host}/comments/get/{Model.Post.Id}";
     }
     <div id="comments_app" data-url="@Url" data-loading-icon-path="/assets/load_icon.svg"></div>
 </div>
