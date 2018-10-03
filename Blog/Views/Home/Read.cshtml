@@ -21,7 +21,7 @@
         <input pattern=".{3,}" required asp-for="@Model.Comment.Author" id="comment_author_input" />
         <label for="comment_content_input">Your comment:</label>
         <textarea pattern=".{5,10}" required asp-for="@Model.Comment.Content" id="comment_content_input"></textarea>
-        <input type="submit" value="Post" />
+        <button type="submit">Post</button>
     </form>
     @{
         var Url = $"https://{Context.Request.Host}/comments/get/{Model.Post.Id}";
