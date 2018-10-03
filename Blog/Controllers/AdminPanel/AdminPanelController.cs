@@ -51,7 +51,7 @@ namespace Blog.Controllers.AdminPanel
         }
 
         
-        public async Task<string> ModifyBlogData([FromForm] BlogData blogData)
+        public async Task<IActionResult> ModifyBlogData([FromForm] BlogData blogData)
         {
             var authorized = await _securityFacade.IsAuthorized(_blogData, BlogConstants.ModifyActionName);
 
@@ -60,7 +60,7 @@ namespace Blog.Controllers.AdminPanel
                 _blogData.SaveData(blogData);
             }
 
-            return "Hello";
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> DeletePost(int id)
