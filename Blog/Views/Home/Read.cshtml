@@ -21,7 +21,7 @@
         <input min="3" asp-for="@Model.Comment.Author" id="comment_author_input" />
         <label for="comment_content_input">Your comment:</label>
         <textarea min="5" asp-for="@Model.Comment.Content" id="comment_content_input"></textarea>
-        <button type="submit">Post</button>
+        <input type="submit" value="Post" />
     </form>
     @{
         var Url = $"https://{Context.Request.Host}/comments/get/{Model.Post.Id}";
