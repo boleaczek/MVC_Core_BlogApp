@@ -10,11 +10,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Blog.Security;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Blog
 {
@@ -49,7 +50,7 @@ namespace Blog
             if(Environment.GetEnvironmentVariable("env") == "production")
             {
                 mainDbConnectionString = "mainDB";
-                userDbConnectionString = "mainDB";
+                userDbConnectionString = "identityDB";
             }
             else
             {
@@ -57,13 +58,23 @@ namespace Blog
                 userDbConnectionString = "IdentityDb";
             }
 
-            services.AddDbContext<BlogContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
-            services.AddDbContext<UserContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString(userDbConnectionString)));
-
-            services.BuildServiceProvider().GetService<BlogContext>().Database.Migrate();
-            services.BuildServiceProvider().GetService<UserContext>().Database.Migrate();
+            if(Environment.GetEnvironmentVariable("blog_database") == "mysql")
+            {
+                services.AddDbContextPool<BlogContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString(mainDbConnectionString)));
+                services.AddDbContextPool<UserContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString(userDbConnectionString)));
+            }
+            else
+            {
+                services.AddDbContext<BlogContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString(mainDbConnectionString)));
+                services.AddDbContext<UserContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString(userDbConnectionString)));
+            }
+            
+            // services.BuildServiceProvider().GetService<BlogContext>().Database.Migrate();
+            // services.BuildServiceProvider().GetService<UserContext>().Database.Migrate();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>()
